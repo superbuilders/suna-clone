@@ -186,7 +186,7 @@ export const getProject = async (projectId: string): Promise<Project> => {
           }
           
           console.log(`Ensuring sandbox is active for project ${projectId}...`);
-          const response = await fetch(`${API_URL}/project/${projectId}/sandbox/ensure-active`, {
+          const response = await fetch(`${API_URL}/api/project/${projectId}/sandbox/ensure-active`, {
             method: 'POST',
             headers,
           });
@@ -481,9 +481,9 @@ export const startAgent = async (
       throw new Error('Backend URL is not configured. Set NEXT_PUBLIC_BACKEND_URL in your environment.');
     }
 
-    console.log(`[API] Starting agent for thread ${threadId} using ${API_URL}/thread/${threadId}/agent/start`);
+    console.log(`[API] Starting agent for thread ${threadId} using ${API_URL}/api/thread/${threadId}/agent/start`);
     
-    const response = await fetch(`${API_URL}/thread/${threadId}/agent/start`, {
+    const response = await fetch(`${API_URL}/api/thread/${threadId}/agent/start`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -558,7 +558,7 @@ export const stopAgent = async (agentRunId: string): Promise<void> => {
     throw new Error('No access token available');
   }
 
-  const response = await fetch(`${API_URL}/agent-run/${agentRunId}/stop`, {
+  const response = await fetch(`${API_URL}/api/agent-run/${agentRunId}/stop`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -591,7 +591,7 @@ export const getAgentStatus = async (agentRunId: string): Promise<AgentRun> => {
       throw new Error('No access token available');
     }
 
-    const url = `${API_URL}/agent-run/${agentRunId}`;
+    const url = `${API_URL}/api/agent-run/${agentRunId}`;
     console.log(`[API] Fetching from: ${url}`);
     
     const response = await fetch(url, {
@@ -638,7 +638,7 @@ export const getAgentRuns = async (threadId: string): Promise<AgentRun[]> => {
       throw new Error('No access token available');
     }
 
-    const response = await fetch(`${API_URL}/thread/${threadId}/agent-runs`, {
+    const response = await fetch(`${API_URL}/api/thread/${threadId}/agent-runs`, {
       headers: {
         'Authorization': `Bearer ${session.access_token}`,
       },
@@ -728,7 +728,7 @@ export const streamAgent = (agentRunId: string, callbacks: {
         return;
       }
       
-      const url = new URL(`${API_URL}/agent-run/${agentRunId}/stream`);
+      const url = new URL(`${API_URL}/api/agent-run/${agentRunId}/stream`);
       url.searchParams.append('token', session.access_token);
       
       console.log(`[STREAM] Creating EventSource for ${agentRunId}`);
@@ -903,7 +903,7 @@ export const createSandboxFile = async (sandboxId: string, filePath: string, con
       headers['Authorization'] = `Bearer ${session.access_token}`;
     }
 
-    const response = await fetch(`${API_URL}/sandboxes/${sandboxId}/files`, {
+    const response = await fetch(`${API_URL}/api/sandboxes/${sandboxId}/files`, {
       method: 'POST',
       headers,
       body: formData,
@@ -936,7 +936,7 @@ export const createSandboxFileJson = async (sandboxId: string, filePath: string,
       headers['Authorization'] = `Bearer ${session.access_token}`;
     }
 
-    const response = await fetch(`${API_URL}/sandboxes/${sandboxId}/files/json`, {
+    const response = await fetch(`${API_URL}/api/sandboxes/${sandboxId}/files/json`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -963,7 +963,7 @@ export const listSandboxFiles = async (sandboxId: string, path: string): Promise
     const supabase = createClient();
     const { data: { session } } = await supabase.auth.getSession();
     
-    const url = new URL(`${API_URL}/sandboxes/${sandboxId}/files`);
+    const url = new URL(`${API_URL}/api/sandboxes/${sandboxId}/files`);
     url.searchParams.append('path', path);
 
     const headers: Record<string, string> = {};
@@ -994,7 +994,7 @@ export const getSandboxFileContent = async (sandboxId: string, path: string): Pr
     const supabase = createClient();
     const { data: { session } } = await supabase.auth.getSession();
     
-    const url = new URL(`${API_URL}/sandboxes/${sandboxId}/files/content`);
+    const url = new URL(`${API_URL}/api/sandboxes/${sandboxId}/files/content`);
     url.searchParams.append('path', path);
 
     const headers: Record<string, string> = {};
@@ -1128,9 +1128,9 @@ export const initiateAgent = async (formData: FormData): Promise<InitiateAgentRe
       throw new Error('Backend URL is not configured. Set NEXT_PUBLIC_BACKEND_URL in your environment.');
     }
 
-    console.log(`[API] Initiating agent with files using ${API_URL}/agent/initiate`);
+    console.log(`[API] Initiating agent with files using ${API_URL}/api/agent/initiate`);
     
-    const response = await fetch(`${API_URL}/agent/initiate`, {
+    const response = await fetch(`${API_URL}/api/agent/initiate`, {
       method: 'POST',
       headers: {
         // Note: Don't set Content-Type for FormData
@@ -1162,8 +1162,23 @@ export const initiateAgent = async (formData: FormData): Promise<InitiateAgentRe
 
 export const checkApiHealth = async (): Promise<HealthCheckResponse> => {
   try {
-    const response = await fetch(`${API_URL}/health`, {
-      cache: 'no-store',
+    // Check if backend URL is configured
+    if (!API_URL) {
+      throw new Error('Backend URL is not configured. Set NEXT_PUBLIC_BACKEND_URL in your environment.');
+    }
+    
+    console.log(`Checking API health at ${API_URL}/api/health`);
+
+    // >>> ADDED LOGGING HERE <<<
+    const healthCheckUrl = `${API_URL}/api/health`;
+    console.log('[checkApiHealth] Attempting to fetch:', healthCheckUrl);
+    // >>> END ADDED LOGGING <<<
+
+    const response = await fetch(healthCheckUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
     
     if (!response.ok) {
@@ -1247,7 +1262,7 @@ export const createCheckoutSession = async (request: CreateCheckoutSessionReques
       throw new Error('No access token available');
     }
 
-    const response = await fetch(`${API_URL}/billing/create-checkout-session`, {
+    const response = await fetch(`${API_URL}/api/billing/create-checkout-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1298,7 +1313,7 @@ export const createPortalSession = async (request: CreatePortalSessionRequest): 
       throw new Error('No access token available');
     }
 
-    const response = await fetch(`${API_URL}/billing/create-portal-session`, {
+    const response = await fetch(`${API_URL}/api/billing/create-portal-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1329,7 +1344,7 @@ export const getSubscription = async (): Promise<SubscriptionStatus> => {
       throw new Error('No access token available');
     }
 
-    const response = await fetch(`${API_URL}/billing/subscription`, {
+    const response = await fetch(`${API_URL}/api/billing/subscription`, {
       headers: {
         'Authorization': `Bearer ${session.access_token}`,
       },
@@ -1357,7 +1372,7 @@ export const checkBillingStatus = async (): Promise<BillingStatusResponse> => {
       throw new Error('No access token available');
     }
 
-    const response = await fetch(`${API_URL}/billing/check-status`, {
+    const response = await fetch(`${API_URL}/api/billing/check-status`, {
       headers: {
         'Authorization': `Bearer ${session.access_token}`,
       },

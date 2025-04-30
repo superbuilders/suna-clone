@@ -146,6 +146,7 @@ class SandboxToolsBase(Tool):
         self._sandbox = None
         self._sandbox_id = None
         self._sandbox_pass = None
+        self._sandbox_url = None  # Initialize the attribute
 
     async def _ensure_sandbox(self) -> Sandbox:
         """Ensure we have a valid sandbox instance, retrieving it from the project if needed."""
@@ -172,19 +173,25 @@ class SandboxToolsBase(Tool):
                 # Get or start the sandbox
                 self._sandbox = await get_or_start_sandbox(self._sandbox_id)
                 
-                # # Log URLs if not already printed
-                # if not SandboxToolsBase._urls_printed:
-                #     vnc_link = self._sandbox.get_preview_link(6080)
-                #     website_link = self._sandbox.get_preview_link(8080)
+                # Fetch and store the sandbox preview URL (port 8080 for website/HTML previews)
+                try:
+                    website_link = self._sandbox.get_preview_link(8080)
+                    self._sandbox_url = website_link.url if hasattr(website_link, 'url') else str(website_link)
+                    logger.info(f"Sandbox preview URL set to: {self._sandbox_url}")
+                except Exception as url_error:
+                    logger.warning(f"Could not determine sandbox preview URL: {url_error}")
+                    self._sandbox_url = None # Ensure it's None if fetching fails
+
+                # Log URLs if not already printed
+                if not SandboxToolsBase._urls_printed and self._sandbox_url:
+                    vnc_link = self._sandbox.get_preview_link(6080)
+                    vnc_url = vnc_link.url if hasattr(vnc_link, 'url') else str(vnc_link)
                     
-                #     vnc_url = vnc_link.url if hasattr(vnc_link, 'url') else str(vnc_link)
-                #     website_url = website_link.url if hasattr(website_link, 'url') else str(website_link)
-                    
-                #     print("\033[95m***")
-                #     print(f"VNC URL: {vnc_url}")
-                #     print(f"Website URL: {website_url}")
-                #     print("***\033[0m")
-                #     SandboxToolsBase._urls_printed = True
+                    print("\033[95m***")
+                    print(f"VNC URL: {vnc_url}")
+                    print(f"Website URL: {self._sandbox_url}") # Use the stored URL
+                    print("***\033[0m")
+                    SandboxToolsBase._urls_printed = True
                 
             except Exception as e:
                 logger.error(f"Error retrieving sandbox for project {self.project_id}: {str(e)}", exc_info=True)
