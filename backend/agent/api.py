@@ -30,8 +30,16 @@ instance_id = None # Global instance ID for this backend instance
 # TTL for Redis response lists (24 hours)
 REDIS_RESPONSE_LIST_TTL = 3600 * 24
 
-MODEL_NAME_ALIASES = {
+MODEL_MAP = {
+    # Anthropic
+    "haiku": "anthropic/claude-3-haiku-20240307",
+    "sonnet": "anthropic/claude-3-sonnet-20240229",
+    "opus": "anthropic/claude-3-opus-20240229",
+    "sonnet-3.5": "anthropic/claude-3-5-sonnet-20240620",
     "sonnet-3.7": "anthropic/claude-3-7-sonnet-latest",
+    # OpenAI
+    "gpt-4-turbo": "openai/gpt-4-turbo",
+    "gpt-4o": "openai/gpt-4o",
     "gpt-4.1": "openai/gpt-4.1-2025-04-14",
     "gemini-flash-2.5": "openrouter/google/gemini-2.5-flash-preview",
     "grok-3": "xai/grok-3-fast-latest",
@@ -400,7 +408,7 @@ async def start_agent(
         run_agent_background(
             agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
             project_id=project_id, sandbox=sandbox,
-            model_name=MODEL_NAME_ALIASES.get(body.model_name, body.model_name),
+            model_name=MODEL_MAP.get(body.model_name, body.model_name),
             enable_thinking=body.enable_thinking, reasoning_effort=body.reasoning_effort,
             stream=body.stream, enable_context_manager=body.enable_context_manager
         )
@@ -986,7 +994,7 @@ async def initiate_agent_with_files(
             run_agent_background(
                 agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
                 project_id=project_id, sandbox=sandbox,
-                model_name=MODEL_NAME_ALIASES.get(model_name, model_name),
+                model_name=MODEL_MAP.get(model_name, model_name),
                 enable_thinking=enable_thinking, reasoning_effort=reasoning_effort,
                 stream=stream, enable_context_manager=enable_context_manager
             )
