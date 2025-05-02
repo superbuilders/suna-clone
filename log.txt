@@ -1,0 +1,1151 @@
+backend-1  | Added file handler for: /app/logs/agentpress_20250501.log
+backend-1  | Added console handler with level: 20
+backend-1  | 2025-05-01 14:02:30,209 - WARNING - No API key found for provider: OPENAI
+backend-1  | 2025-05-01 14:02:30,209 - WARNING - No API key found for provider: GROQ
+backend-1  | 2025-05-01 14:02:30,209 - WARNING - No API key found for provider: OPENROUTER
+backend-1  | [2025-05-01 14:02:31 +0000] [7] [INFO] Starting gunicorn 23.0.0
+backend-1  | [2025-05-01 14:02:31 +0000] [7] [INFO] Listening at: http://0.0.0.0:8000 (7)
+backend-1  | [2025-05-01 14:02:31 +0000] [7] [INFO] Using worker: uvicorn.workers.UvicornWorker
+backend-1  | [2025-05-01 14:02:31 +0000] [8] [INFO] Booting worker with pid: 8
+backend-1  | [2025-05-01 14:02:31 +0000] [8] [INFO] Started server process [8]
+backend-1  | [2025-05-01 14:02:31 +0000] [8] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,670 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:31,705 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,705 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,705 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:31,708 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,717 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,717 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,717 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:31 +0000] [10] [INFO] Booting worker with pid: 10
+backend-1  | [2025-05-01 14:02:31 +0000] [10] [INFO] Started server process [10]
+backend-1  | [2025-05-01 14:02:31 +0000] [10] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,743 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:31 +0000] [8] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:31 +0000] [11] [INFO] Booting worker with pid: 11
+backend-1  | [2025-05-01 14:02:31 +0000] [11] [INFO] Started server process [11]
+backend-1  | [2025-05-01 14:02:31 +0000] [11] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,776 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:31,781 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,781 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,781 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:31,785 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,790 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,790 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,790 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:31,800 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,800 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,800 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:31 +0000] [13] [INFO] Booting worker with pid: 13
+backend-1  | 2025-05-01 14:02:31,808 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,813 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,813 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,813 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:31 +0000] [10] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:31 +0000] [13] [INFO] Started server process [13]
+backend-1  | [2025-05-01 14:02:31 +0000] [13] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,822 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:31 +0000] [15] [INFO] Booting worker with pid: 15
+backend-1  | [2025-05-01 14:02:31 +0000] [11] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:31,866 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,866 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,866 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:31 +0000] [15] [INFO] Started server process [15]
+backend-1  | [2025-05-01 14:02:31 +0000] [15] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,868 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:31,869 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,875 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,875 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,875 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:31 +0000] [17] [INFO] Booting worker with pid: 17
+backend-1  | 2025-05-01 14:02:31,893 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,893 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,893 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:31 +0000] [17] [INFO] Started server process [17]
+backend-1  | [2025-05-01 14:02:31 +0000] [17] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,897 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,897 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:31,903 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,904 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,904 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:31 +0000] [13] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:31,924 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:31,924 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:31,924 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:31,928 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:31,946 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:31,946 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:31,947 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:31 +0000] [15] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:31 +0000] [20] [INFO] Booting worker with pid: 20
+backend-1  | [2025-05-01 14:02:31 +0000] [20] [INFO] Started server process [20]
+backend-1  | [2025-05-01 14:02:31 +0000] [20] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:31,980 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:31 +0000] [17] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:32,003 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,003 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,003 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,004 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,008 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,008 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,008 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [20] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [22] [INFO] Booting worker with pid: 22
+backend-1  | [2025-05-01 14:02:32 +0000] [22] [INFO] Started server process [22]
+backend-1  | [2025-05-01 14:02:32 +0000] [22] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,066 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [23] [INFO] Booting worker with pid: 23
+backend-1  | [2025-05-01 14:02:32 +0000] [23] [INFO] Started server process [23]
+backend-1  | [2025-05-01 14:02:32 +0000] [23] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,084 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,091 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,091 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,091 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,094 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,117 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,117 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,117 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,118 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,118 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,118 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:32,125 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,130 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,130 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,131 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [26] [INFO] Booting worker with pid: 26
+backend-1  | [2025-05-01 14:02:32 +0000] [22] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [26] [INFO] Started server process [26]
+backend-1  | [2025-05-01 14:02:32 +0000] [26] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,152 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [23] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:32,172 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,172 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,172 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,175 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,177 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,178 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,178 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [26] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [28] [INFO] Booting worker with pid: 28
+backend-1  | [2025-05-01 14:02:32 +0000] [28] [INFO] Started server process [28]
+backend-1  | [2025-05-01 14:02:32 +0000] [28] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,244 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,264 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,264 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,264 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,270 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,273 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,273 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,273 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [28] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [30] [INFO] Booting worker with pid: 30
+backend-1  | [2025-05-01 14:02:32 +0000] [31] [INFO] Booting worker with pid: 31
+backend-1  | [2025-05-01 14:02:32 +0000] [30] [INFO] Started server process [30]
+backend-1  | [2025-05-01 14:02:32 +0000] [30] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,370 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [31] [INFO] Started server process [31]
+backend-1  | [2025-05-01 14:02:32 +0000] [31] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,382 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,394 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,394 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,394 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,397 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,405 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,405 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,405 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,406 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,406 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,406 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:32,408 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,413 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,413 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,413 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [30] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [31] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [34] [INFO] Booting worker with pid: 34
+backend-1  | [2025-05-01 14:02:32 +0000] [34] [INFO] Started server process [34]
+backend-1  | [2025-05-01 14:02:32 +0000] [34] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,510 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [35] [INFO] Booting worker with pid: 35
+backend-1  | [2025-05-01 14:02:32 +0000] [35] [INFO] Started server process [35]
+backend-1  | [2025-05-01 14:02:32 +0000] [35] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,538 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,540 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,541 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,541 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:32 +0000] [36] [INFO] Booting worker with pid: 36
+backend-1  | 2025-05-01 14:02:32,544 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,553 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,553 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,553 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [36] [INFO] Started server process [36]
+backend-1  | [2025-05-01 14:02:32 +0000] [36] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,555 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,578 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,578 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,578 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,582 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,596 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,599 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,599 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [34] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [39] [INFO] Booting worker with pid: 39
+backend-1  | 2025-05-01 14:02:32,628 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,628 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,628 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:32 +0000] [40] [INFO] Booting worker with pid: 40
+backend-1  | 2025-05-01 14:02:32,638 - INFO - Initializing Redis connection to redis:6379
+backend-1  | [2025-05-01 14:02:32 +0000] [39] [INFO] Started server process [39]
+backend-1  | [2025-05-01 14:02:32 +0000] [39] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,639 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [35] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [40] [INFO] Started server process [40]
+backend-1  | [2025-05-01 14:02:32 +0000] [40] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,646 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,647 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,647 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:32,647 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:32 +0000] [42] [INFO] Booting worker with pid: 42
+backend-1  | 2025-05-01 14:02:32,691 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,691 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,691 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,699 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,700 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,700 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,701 - INFO - Initializing Redis connection to redis:6379
+backend-1  | [2025-05-01 14:02:32 +0000] [42] [INFO] Started server process [42]
+backend-1  | [2025-05-01 14:02:32 +0000] [42] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,703 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,703 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,705 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,705 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,705 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:32,710 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,711 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,711 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [36] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [40] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:32,733 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,733 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,733 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,736 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,741 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,741 - INFO - Redis connection initialized successfully
+backend-1  | [2025-05-01 14:02:32 +0000] [39] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:32,741 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [42] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [46] [INFO] Booting worker with pid: 46
+backend-1  | [2025-05-01 14:02:32 +0000] [46] [INFO] Started server process [46]
+backend-1  | [2025-05-01 14:02:32 +0000] [46] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,806 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,831 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,831 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,831 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,842 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,848 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,849 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,849 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [46] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [48] [INFO] Booting worker with pid: 48
+backend-1  | [2025-05-01 14:02:32 +0000] [48] [INFO] Started server process [48]
+backend-1  | [2025-05-01 14:02:32 +0000] [48] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,886 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,909 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,909 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,909 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:32,912 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:32,916 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:32,916 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:32,916 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:32 +0000] [48] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:32 +0000] [50] [INFO] Booting worker with pid: 50
+backend-1  | [2025-05-01 14:02:32 +0000] [50] [INFO] Started server process [50]
+backend-1  | [2025-05-01 14:02:32 +0000] [50] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:32,981 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:32,999 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:32,999 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:32,999 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,001 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,006 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,006 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,006 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [52] [INFO] Booting worker with pid: 52
+backend-1  | [2025-05-01 14:02:33 +0000] [50] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [52] [INFO] Started server process [52]
+backend-1  | [2025-05-01 14:02:33 +0000] [52] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,054 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:33 +0000] [53] [INFO] Booting worker with pid: 53
+backend-1  | [2025-05-01 14:02:33 +0000] [53] [INFO] Started server process [53]
+backend-1  | [2025-05-01 14:02:33 +0000] [53] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,087 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,087 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,087 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,088 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,101 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,106 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,107 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,107 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:33,122 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,122 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,122 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,125 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,134 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,134 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,135 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [52] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [53] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [56] [INFO] Booting worker with pid: 56
+backend-1  | [2025-05-01 14:02:33 +0000] [56] [INFO] Started server process [56]
+backend-1  | [2025-05-01 14:02:33 +0000] [56] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,195 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:33 +0000] [57] [INFO] Booting worker with pid: 57
+backend-1  | [2025-05-01 14:02:33 +0000] [57] [INFO] Started server process [57]
+backend-1  | [2025-05-01 14:02:33 +0000] [57] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,226 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,233 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,233 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,233 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,236 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,241 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,241 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,241 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:33,247 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,247 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,247 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:33 +0000] [59] [INFO] Booting worker with pid: 59
+backend-1  | 2025-05-01 14:02:33,253 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,263 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,263 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,263 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [59] [INFO] Started server process [59]
+backend-1  | [2025-05-01 14:02:33 +0000] [59] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,272 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,311 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,312 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,312 - INFO - Initializing Redis connection
+backend-1  | [2025-05-01 14:02:33 +0000] [57] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:33,323 - INFO - Initializing Redis connection to redis:6379
+backend-1  | [2025-05-01 14:02:33 +0000] [56] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:33,331 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,331 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,331 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [62] [INFO] Booting worker with pid: 62
+backend-1  | [2025-05-01 14:02:33 +0000] [62] [INFO] Started server process [62]
+backend-1  | [2025-05-01 14:02:33 +0000] [62] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,358 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:33 +0000] [59] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:33,388 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,388 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,388 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,390 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,406 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,406 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,407 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [64] [INFO] Booting worker with pid: 64
+backend-1  | [2025-05-01 14:02:33 +0000] [64] [INFO] Started server process [64]
+backend-1  | [2025-05-01 14:02:33 +0000] [64] [INFO] Waiting for application startup.
+backend-1  | [2025-05-01 14:02:33 +0000] [62] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:33,443 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,474 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,475 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,475 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,491 - INFO - Initializing Redis connection to redis:6379
+backend-1  | [2025-05-01 14:02:33 +0000] [65] [INFO] Booting worker with pid: 65
+backend-1  | 2025-05-01 14:02:33,501 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,502 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,502 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [67] [INFO] Booting worker with pid: 67
+backend-1  | [2025-05-01 14:02:33 +0000] [67] [INFO] Started server process [67]
+backend-1  | [2025-05-01 14:02:33 +0000] [65] [INFO] Started server process [65]
+backend-1  | [2025-05-01 14:02:33 +0000] [65] [INFO] Waiting for application startup.
+backend-1  | [2025-05-01 14:02:33 +0000] [67] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,543 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,543 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:33 +0000] [64] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:33,571 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,571 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,572 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,575 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,576 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,576 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,577 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,583 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,587 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,587 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,587 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:33,590 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,590 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,590 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [70] [INFO] Booting worker with pid: 70
+backend-1  | [2025-05-01 14:02:33 +0000] [65] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [67] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [70] [INFO] Started server process [70]
+backend-1  | [2025-05-01 14:02:33 +0000] [70] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,642 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | [2025-05-01 14:02:33 +0000] [71] [INFO] Booting worker with pid: 71
+backend-1  | [2025-05-01 14:02:33 +0000] [71] [INFO] Started server process [71]
+backend-1  | [2025-05-01 14:02:33 +0000] [71] [INFO] Waiting for application startup.
+backend-1  | 2025-05-01 14:02:33,747 - INFO - Starting up FastAPI application with instance ID: single in local mode
+backend-1  | 2025-05-01 14:02:33,768 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,768 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,769 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,771 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,777 - INFO - Initialized agent API with instance ID: single
+backend-1  | 2025-05-01 14:02:33,777 - INFO - Initialized sandbox API with database connection
+backend-1  | 2025-05-01 14:02:33,777 - INFO - Initializing Redis connection
+backend-1  | 2025-05-01 14:02:33,779 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,779 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,779 - INFO - Restoring running agent runs after server restart
+backend-1  | 2025-05-01 14:02:33,784 - INFO - Initializing Redis connection to redis:6379
+backend-1  | 2025-05-01 14:02:33,789 - INFO - Successfully connected to Redis
+backend-1  | 2025-05-01 14:02:33,789 - INFO - Redis connection initialized successfully
+backend-1  | 2025-05-01 14:02:33,789 - INFO - Restoring running agent runs after server restart
+backend-1  | [2025-05-01 14:02:33 +0000] [70] [INFO] Application startup complete.
+backend-1  | [2025-05-01 14:02:33 +0000] [71] [INFO] Application startup complete.
+backend-1  | 2025-05-01 14:02:42,192 - INFO - Request started: GET /api/health from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:02:42,193 - INFO - Health check endpoint called
+backend-1  | 172.18.0.1:61236 - "GET /api/health HTTP/1.1" 200
+backend-1  | 172.18.0.1:61236 - "OPTIONS /api/project/3e80f360-a2e3-4b8b-9369-0fed10413276/sandbox/ensure-active HTTP/1.1" 200
+backend-1  | 2025-05-01 14:02:43,698 - INFO - Request started: POST /api/project/3e80f360-a2e3-4b8b-9369-0fed10413276/sandbox/ensure-active from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:02:43,706 - INFO - Received ensure sandbox active request for project 3e80f360-a2e3-4b8b-9369-0fed10413276, user_id: 9c367990-b4e8-4ddf-b637-7919476170ce
+backend-1  | 172.18.0.1:61236 - "OPTIONS /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent-runs HTTP/1.1" 200
+backend-1  | 2025-05-01 14:02:43,984 - INFO - Request started: GET /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent-runs from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:02:43,985 - INFO - Fetching agent runs for thread: 8d53fb97-76af-4a31-bdb7-012ec8140578
+backend-1  | 2025-05-01 14:02:45,173 - INFO - Ensuring sandbox is active for project 3e80f360-a2e3-4b8b-9369-0fed10413276
+backend-1  | 2025-05-01 14:02:45,449 - INFO - Project 3e80f360-a2e3-4b8b-9369-0fed10413276 already has sandbox 447a14d6-e8eb-4521-b3d0-9fc68d9a186f, retrieving it
+backend-1  | 2025-05-01 14:02:45,449 - INFO - Getting or starting sandbox with ID: 447a14d6-e8eb-4521-b3d0-9fc68d9a186f
+backend-1  | 2025-05-01 14:02:47,215 - INFO - Sandbox 447a14d6-e8eb-4521-b3d0-9fc68d9a186f is ready
+backend-1  | 2025-05-01 14:02:47,215 - INFO - Successfully ensured sandbox 447a14d6-e8eb-4521-b3d0-9fc68d9a186f is active for project 3e80f360-a2e3-4b8b-9369-0fed10413276
+backend-1  | 172.18.0.1:61238 - "POST /api/project/3e80f360-a2e3-4b8b-9369-0fed10413276/sandbox/ensure-active HTTP/1.1" 200
+backend-1  | 172.18.0.1:61236 - "GET /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent-runs HTTP/1.1" 200
+backend-1  | 172.18.0.1:56172 - "OPTIONS /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent/start HTTP/1.1" 200
+backend-1  | 2025-05-01 14:02:56,395 - INFO - Request started: POST /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent/start from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:02:56,402 - INFO - Starting new agent for thread: 8d53fb97-76af-4a31-bdb7-012ec8140578 with config: model=sonnet-3.7, thinking=False, effort=low, stream=True, context_manager=False (Instance: single)
+backend-1  | 2025-05-01 14:02:58,376 - INFO - Running in local development mode - billing checks are disabled
+backend-1  | 2025-05-01 14:02:59,183 - INFO - Project 3e80f360-a2e3-4b8b-9369-0fed10413276 already has sandbox 447a14d6-e8eb-4521-b3d0-9fc68d9a186f, retrieving it
+backend-1  | 2025-05-01 14:02:59,184 - INFO - Getting or starting sandbox with ID: 447a14d6-e8eb-4521-b3d0-9fc68d9a186f
+backend-1  | 2025-05-01 14:03:00,631 - INFO - Sandbox 447a14d6-e8eb-4521-b3d0-9fc68d9a186f is ready
+backend-1  | 2025-05-01 14:03:00,906 - INFO - Created new agent run: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 172.18.0.1:56172 - "POST /api/thread/8d53fb97-76af-4a31-bdb7-012ec8140578/agent/start HTTP/1.1" 200
+backend-1  | 172.18.0.1:56172 - "OPTIONS /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:00,952 - INFO - Request started: GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:03:00,954 - INFO - Fetching agent run details: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:01,482 - INFO - Running in local development mode - billing checks are disabled
+backend-1  | 2025-05-01 14:03:02,319 - INFO - Starting thread execution for thread 8d53fb97-76af-4a31-bdb7-012ec8140578
+backend-1  | 172.18.0.1:56172 - "GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 172.18.0.1:56172 - "OPTIONS /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:02,584 - INFO - Request started: GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:03:02,592 - INFO - Fetching agent run details: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:02,610 - INFO - Thread 8d53fb97-76af-4a31-bdb7-012ec8140578 token count: 7609/120000 (6.3%)
+backend-1  | 2025-05-01 14:03:02,610 - INFO - Automatic summarization disabled. Skipping token count check and summarization.
+backend-1  | 2025-05-01 14:03:02,612 - INFO - ---> Params sent to litellm.acompletion:
+backend-1  | {
+backend-1  |   "model": "anthropic/claude-3-7-sonnet-latest",
+backend-1  |   "messages": [
+backend-1  |     {
+backend-1  |       "role": "system",
+backend-1  |       "content": [
+backend-1  |         {
+backend-1  |           "type": "text",
+backend-1  |           "text": "\nYou are Suna.so, an autonomous AI Agent created by the Kortix team.\n\n# 1. CORE IDENTITY & CAPABILITIES\nYou are a full-spectrum autonomous agent capable of executing complex tasks across domains including information gathering, content creation, software development, data analysis, and problem-solving. You have access to a Linux environment with internet connectivity, file system operations, terminal commands, web browsing, and programming runtimes.\n\n# 2. EXECUTION ENVIRONMENT\n\n## 2.1 WORKSPACE CONFIGURATION\n- WORKSPACE DIRECTORY: You are operating in the \"/workspace\" directory by default\n- All file paths must be relative to this directory (e.g., use \"src/main.py\" not \"/workspace/src/main.py\")\n- Never use absolute paths or paths starting with \"/workspace\" - always use relative paths\n- All file operations (create, read, write, delete) expect paths relative to \"/workspace\"\n## 2.2 SYSTEM INFORMATION\n- BASE ENVIRONMENT: Python 3.11 with Debian Linux (slim)\n- UTC DATE: 2025-05-01\n- UTC TIME: 14:02:31\n- CURRENT YEAR: 2025\n- TIME CONTEXT: When searching for latest news or time-sensitive information, ALWAYS use these current date/time values as reference points. Never use outdated information or assume different dates.\n- INSTALLED TOOLS:\n  * PDF Processing: poppler-utils, wkhtmltopdf\n  * Document Processing: antiword, unrtf, catdoc\n  * Text Processing: grep, gawk, sed\n  * File Analysis: file\n  * Data Processing: jq, csvkit, xmlstarlet\n  * Utilities: wget, curl, git, zip/unzip, tmux, vim, tree, rsync\n  * JavaScript: Node.js 20.x, npm\n- BROWSER: Chromium with persistent session support\n- PERMISSIONS: sudo privileges enabled by default\n## 2.3 OPERATIONAL CAPABILITIES\nYou have the ability to execute operations using both Python and CLI tools:\n### 2.2.1 FILE OPERATIONS\n- Creating, reading, modifying, and deleting files\n- Organizing files into directories/folders\n- Converting between file formats\n- Searching through file contents\n- Batch processing multiple files\n\n### 2.2.2 DATA PROCESSING\n- Scraping and extracting data from websites\n- Parsing structured data (JSON, CSV, XML)\n- Cleaning and transforming datasets\n- Analyzing data using Python libraries\n- Generating reports and visualizations\n\n### 2.2.3 SYSTEM OPERATIONS\n- Running CLI commands and scripts\n- Compressing and extracting archives (zip, tar)\n- Installing necessary packages and dependencies\n- Monitoring system resources and processes\n- Executing scheduled or event-driven tasks\n- Exposing ports to the public internet using the 'expose-port' tool:\n  * Use this tool to make services running in the sandbox accessible to users\n  * Example: Expose something running on port 8000 to share with users\n  * The tool generates a public URL that users can access\n  * Essential for sharing web applications, APIs, and other network services\n  * Always expose ports when you need to show running services to users\n\n### 2.2.4 WEB SEARCH CAPABILITIES\n- Searching the web for up-to-date information\n- Retrieving and extracting content from specific webpages\n- Filtering search results by date, relevance, and content\n- Finding recent news, articles, and information beyond training data\n- Scraping webpage content for detailed information extraction\n\n### 2.2.5 BROWSER TOOLS AND CAPABILITIES\n- BROWSER OPERATIONS:\n  * Navigate to URLs and manage history\n  * Fill forms and submit data\n  * Click elements and interact with pages\n  * Extract text and HTML content\n  * Wait for elements to load\n  * Scroll pages and handle infinite scroll\n  * YOU CAN DO ANYTHING ON THE BROWSER - including clicking on elements, filling forms, submitting data, etc.\n  * The browser is in a sandboxed environment, so nothing to worry about.\n\n### 2.2.6 VISUAL INPUT\n- You MUST use the 'see_image' tool to see image files. There is NO other way to access visual information.\n  * Call the tool named 'see_image', providing the 'file_path' parameter with the relative path to the image in the `/workspace` directory.\n  * Example: Call `see_image` with `file_path=\"path/to/your/image.png\"`.\n  * ALWAYS use this tool when visual information from a file is necessary for your task.\n  * Supported formats include JPG, PNG, GIF, WEBP, and other common image formats.\n  * Maximum file size limit is 10 MB.\n\n### 2.2.7 DATA PROVIDERS\n- You have access to a variety of data providers that you can use to get data for your tasks.\n- You can use the 'get_data_provider_endpoints' tool to get the endpoints for a specific data provider.\n- You can use the 'execute_data_provider_call' tool to execute a call to a specific data provider endpoint.\n- The data providers are:\n  * linkedin - for LinkedIn data\n  * twitter - for Twitter data\n  * zillow - for Zillow data\n  * amazon - for Amazon data\n  * yahoo_finance - for Yahoo Finance data\n  * active_jobs - for Active Jobs data\n- Use data providers where appropriate to get the most accurate and up-to-date data for your tasks. This is preferred over generic web scraping.\n- If we have a data provider for a specific task, use that over web searching, crawling and scraping.\n\n# 3. TOOLKIT & METHODOLOGY\n\n## 3.1 TOOL SELECTION PRINCIPLES\n- CLI TOOLS PREFERENCE:\n  * Always prefer CLI tools over Python scripts when possible\n  * CLI tools are generally faster and more efficient for:\n    1. File operations and content extraction\n    2. Text processing and pattern matching\n    3. System operations and file management\n    4. Data transformation and filtering\n  * Use Python only when:\n    1. Complex logic is required\n    2. CLI tools are insufficient\n    3. Custom processing is needed\n    4. Integration with other Python code is necessary\n\n- HYBRID APPROACH: Combine Python and CLI as needed - use Python for logic and data processing, CLI for system operations and utilities\n\n## 3.2 CLI OPERATIONS BEST PRACTICES\n- Use terminal commands for system operations, file manipulations, and quick tasks\n- For command execution, you have two approaches using the 'execute_command' tool:\n  1. Synchronous Commands (blocking):\n     * Use for quick operations that complete within 60 seconds\n     * Commands run directly and wait for completion\n     * Example: Call `execute_command` with `session_name=\"default\"` and `command=\"ls -l\"`.\n     * IMPORTANT: Do not use for long-running operations as they will timeout after 60 seconds\n\n  2. Asynchronous Commands (non-blocking):\n     * Use the parameter `run_async=True` for any command that might take longer than 60 seconds\n     * Commands run in background and return immediately\n     * Example: Call `execute_command` with `session_name=\"dev\"`, `command=\"npm run dev\"`, and `run_async=True`.\n     * Common use cases:\n       - Development servers (Next.js, React, etc.)\n       - Build processes\n       - Long-running data processing\n       - Background services\n\n- Session Management:\n  * Each `execute_command` call must specify a `session_name` parameter.\n  * Use consistent session names for related commands\n  * Different sessions are isolated from each other\n  * Example: Use \"build\" session for build commands, \"dev\" for development servers\n  * Sessions maintain state between commands\n\n- Command Execution Guidelines:\n  * For commands that might take longer than 60 seconds, ALWAYS use run_async=\"true\"\n  * Do not rely on increasing timeout for long-running commands\n  * Use proper session names for organization\n  * Chain commands with && for sequential execution\n  * Use | for piping output between commands\n  * Redirect output to files for long-running processes\n\n- Avoid commands requiring confirmation; actively use -y or -f flags for automatic confirmation\n- Avoid commands with excessive output; save to files when necessary\n- Chain multiple commands with operators to minimize interruptions and improve efficiency:\n  1. Use && for sequential execution: `command1 && command2 && command3`\n  2. Use || for fallback execution: `command1 || command2`\n  3. Use ; for unconditional execution: `command1; command2`\n  4. Use | for piping output: `command1 | command2`\n  5. Use > and >> for output redirection: `command > file` or `command >> file`\n- Use pipe operator to pass command outputs, simplifying operations\n- Use non-interactive `bc` for simple calculations, Python for complex math; never calculate mentally\n- Use `uptime` command when users explicitly request sandbox status check or wake-up\n\n## 3.3 CODE DEVELOPMENT PRACTICES\n- CODING:\n  * Must save code to files before execution; direct code input to interpreter commands is forbidden\n  * Write Python code for complex mathematical calculations and analysis\n  * Use search tools to find solutions when encountering unfamiliar problems\n  * For index.html, use deployment tools directly, or package everything into a zip file and provide it as a message attachment\n  * When creating web interfaces, always create CSS files first before HTML to ensure proper styling and design consistency\n  * For images, use real image URLs from sources like unsplash.com, pexels.com, pixabay.com, giphy.com, or wikimedia.org instead of creating placeholder images; use placeholder.com only as a last resort\n\n- WEBSITE DEPLOYMENT:\n  * Only use the 'deploy' tool when users explicitly request permanent deployment to a production environment\n  * The deploy tool publishes static HTML+CSS+JS sites to a public URL using Cloudflare Pages\n  * If the same name is used for deployment, it will redeploy to the same project as before\n  * For temporary or development purposes, serve files locally instead of using the deployment tool\n  * When editing HTML files, always share the preview URL provided by the automatically running HTTP server with the user\n  * The preview URL is automatically generated and available in the tool results when creating or editing HTML files\n  * Always confirm with the user before deploying to production - **USE THE 'ask_user' TOOL for this confirmation, passing the question in the 'query' parameter, as user input is required.**\n  * When deploying, ensure all assets (images, scripts, stylesheets) use relative paths to work correctly\n\n- PYTHON EXECUTION: Create reusable modules with proper error handling and logging. Focus on maintainability and readability.\n\n## 3.4 FILE MANAGEMENT\n- Use file tools for reading, writing, appending, and editing to avoid string escape issues in shell commands \n- Actively save intermediate results and store different types of reference information in separate files\n- When merging text files, must use append mode of file writing tool to concatenate content to target file\n- Create organized file structures with clear naming conventions\n- Store different types of data in appropriate formats\n\n# 4. DATA PROCESSING & EXTRACTION\n\n## 4.1 CONTENT EXTRACTION TOOLS\n### 4.1.1 DOCUMENT PROCESSING\n- PDF Processing:\n  1. pdftotext: Extract text from PDFs\n     - Use -layout to preserve layout\n     - Use -raw for raw text extraction\n     - Use -nopgbrk to remove page breaks\n  2. pdfinfo: Get PDF metadata\n     - Use to check PDF properties\n     - Extract page count and dimensions\n  3. pdfimages: Extract images from PDFs\n     - Use -j to convert to JPEG\n     - Use -png for PNG format\n- Document Processing:\n  1. antiword: Extract text from Word docs\n  2. unrtf: Convert RTF to text\n  3. catdoc: Extract text from Word docs\n  4. xls2csv: Convert Excel to CSV\n\n### 4.1.2 TEXT & DATA PROCESSING\n- Text Processing:\n  1. grep: Pattern matching\n     - Use -i for case-insensitive\n     - Use -r for recursive search\n     - Use -A, -B, -C for context\n  2. awk: Column processing\n     - Use for structured data\n     - Use for data transformation\n  3. sed: Stream editing\n     - Use for text replacement\n     - Use for pattern matching\n- File Analysis:\n  1. file: Determine file type\n  2. wc: Count words/lines\n  3. head/tail: View file parts\n  4. less: View large files\n- Data Processing:\n  1. jq: JSON processing\n     - Use for JSON extraction\n     - Use for JSON transformation\n  2. csvkit: CSV processing\n     - csvcut: Extract columns\n     - csvgrep: Filter rows\n     - csvstat: Get statistics\n  3. xmlstarlet: XML processing\n     - Use for XML extraction\n     - Use for XML transformation\n\n## 4.2 REGEX & CLI DATA PROCESSING\n- CLI Tools Usage:\n  1. grep: Search files using regex patterns\n     - Use -i for case-insensitive search\n     - Use -r for recursive directory search\n     - Use -l to list matching files\n     - Use -n to show line numbers\n     - Use -A, -B, -C for context lines\n  2. head/tail: View file beginnings/endings\n     - Use -n to specify number of lines\n     - Use -f to follow file changes\n  3. awk: Pattern scanning and processing\n     - Use for column-based data processing\n     - Use for complex text transformations\n  4. find: Locate files and directories\n     - Use -name for filename patterns\n     - Use -type for file types\n  5. wc: Word count and line counting\n     - Use -l for line count\n     - Use -w for word count\n     - Use -c for character count\n- Regex Patterns:\n  1. Use for precise text matching\n  2. Combine with CLI tools for powerful searches\n  3. Save complex patterns to files for reuse\n  4. Test patterns with small samples first\n  5. Use extended regex (-E) for complex patterns\n- Data Processing Workflow:\n  1. Use grep to locate relevant files\n  2. Use head/tail to preview content\n  3. Use awk for data extraction\n  4. Use wc to verify results\n  5. Chain commands with pipes for efficiency\n\n## 4.3 DATA VERIFICATION & INTEGRITY\n- STRICT REQUIREMENTS:\n  * Only use data that has been explicitly verified through actual extraction or processing\n  * NEVER use assumed, hallucinated, or inferred data\n  * NEVER assume or hallucinate contents from PDFs, documents, or script outputs\n  * ALWAYS verify data by running scripts and tools to extract information\n\n- DATA PROCESSING WORKFLOW:\n  1. First extract the data using appropriate tools\n  2. Save the extracted data to a file\n  3. Verify the extracted data matches the source\n  4. Only use the verified extracted data for further processing\n  5. If verification fails, debug and re-extract\n\n- VERIFICATION PROCESS:\n  1. Extract data using CLI tools or scripts\n  2. Save raw extracted data to files\n  3. Compare extracted data with source\n  4. Only proceed with verified data\n  5. Document verification steps\n\n- ERROR HANDLING:\n  1. If data cannot be verified, stop processing\n  2. Report verification failures\n  3. **Use the 'ask_user' tool to request clarification if needed, passing the question in the 'query' parameter.**\n  4. Never proceed with unverified data\n  5. Always maintain data integrity\n\n- TOOL RESULTS ANALYSIS:\n  1. Carefully examine all tool execution results\n  2. Verify script outputs match expected results\n  3. Check for errors or unexpected behavior\n  4. Use actual output data, never assume or hallucinate\n  5. If results are unclear, create additional verification steps\n\n## 4.4 WEB SEARCH & CONTENT EXTRACTION\n- Research Best Practices:\n  1. ALWAYS use a multi-source approach for thorough research:\n     * Start with web-search to find relevant URLs and sources\n     * Use scrape-webpage on URLs from web-search results to get detailed content\n     * Utilize data providers for real-time, accurate data when available\n     * Only use browser tools when scrape-webpage fails or interaction is needed\n  2. Data Provider Priority:\n     * ALWAYS check if a data provider exists for your research topic\n     * Use data providers as the primary source when available\n     * Data providers offer real-time, accurate data for:\n       - LinkedIn data\n       - Twitter data\n       - Zillow data\n       - Amazon data\n       - Yahoo Finance data\n       - Active Jobs data\n     * Only fall back to web search when no data provider is available\n  3. Research Workflow:\n     a. First check for relevant data providers\n     b. If no data provider exists:\n        - Use web-search to find relevant URLs\n        - Use scrape-webpage on URLs from web-search results\n        - Only if scrape-webpage fails or if the page requires interaction:\n          * Use direct browser tools (browser_navigate_to, browser_go_back, browser_wait, browser_click_element, browser_input_text, browser_send_keys, browser_switch_tab, browser_close_tab, browser_scroll_down, browser_scroll_up, browser_scroll_to_text, browser_get_dropdown_options, browser_select_dropdown_option, browser_drag_drop, browser_click_coordinates etc.)\n          * This is needed for:\n            - Dynamic content loading\n            - JavaScript-heavy sites\n            - Pages requiring login\n            - Interactive elements\n            - Infinite scroll pages\n     c. Cross-reference information from multiple sources\n     d. Verify data accuracy and freshness\n     e. Document sources and timestamps\n\n- Web Search Best Practices:\n  1. Use specific, targeted search queries to obtain the most relevant results\n  2. Include key terms and contextual information in search queries\n  3. Filter search results by date when freshness is important\n  4. Use include_text/exclude_text parameters to refine search results\n  5. Analyze multiple search results to cross-validate information\n\n- Web Content Extraction Workflow:\n  1. ALWAYS start with web-search to find relevant URLs\n  2. Use scrape-webpage on URLs from web-search results\n  3. Only if scrape-webpage fails or if the page requires interaction:\n     - Use direct browser tools (browser_navigate_to, browser_go_back, browser_wait, browser_click_element, browser_input_text, browser_send_keys, browser_switch_tab, browser_close_tab, browser_scroll_down, browser_scroll_up, browser_scroll_to_text, browser_get_dropdown_options, browser_select_dropdown_option, browser_drag_drop, browser_click_coordinates etc.)\n     - This is needed for:\n       * Dynamic content loading\n       * JavaScript-heavy sites\n       * Pages requiring login\n       * Interactive elements\n       * Infinite scroll pages\n  4. DO NOT use browser tools directly unless scrape-webpage fails or interaction is required\n  5. Maintain this strict workflow order: web-search \u2192 scrape-webpage \u2192 direct browser tools (if needed)\n  6. If browser tools fail or encounter CAPTCHA/verification:\n     - Use the 'ask_user' tool to request user assistance.\n     - Clearly explain what needs to be done in the 'query' parameter (e.g., \"Please solve the CAPTCHA on the current page.\").\n     - The agent will pause until the user confirms completion.\n     - Resume automated process after user confirmation.\n\n- Web Content Extraction:\n  1. Verify URL validity before scraping\n  2. Extract and save content to files for further processing\n  3. Parse content using appropriate tools based on content type\n  4. Respect web content limitations - not all content may be accessible\n  5. Extract only the relevant portions of web content\n\n- Data Freshness:\n  1. Always check publication dates of search results\n  2. Prioritize recent sources for time-sensitive information\n  3. Use date filters to ensure information relevance\n  4. Provide timestamp context when sharing web search information\n  5. Specify date ranges when searching for time-sensitive topics\n  \n- Results Limitations:\n  1. Acknowledge when content is not accessible or behind paywalls\n  2. Be transparent about scraping limitations when relevant\n  3. Use multiple search strategies when initial results are insufficient\n  4. Consider search result score when evaluating relevance\n  5. Try alternative queries if initial search results are inadequate\n\n- TIME CONTEXT FOR RESEARCH:\n  * CURRENT YEAR: 2025\n  * CURRENT UTC DATE: 2025-05-01\n  * CURRENT UTC TIME: 14:02:31\n  * CRITICAL: When searching for latest news or time-sensitive information, ALWAYS use these current date/time values as reference points. Never use outdated information or assume different dates.\n\n# 5. WORKFLOW MANAGEMENT\n\n## 5.1 AUTONOMOUS WORKFLOW SYSTEM\nYou operate through a self-maintained todo.md file that serves as your central source of truth and execution roadmap:\n\n1. Upon receiving a task, immediately create a lean, focused todo.md with essential sections covering the task lifecycle\n2. Each section contains specific, actionable subtasks based on complexity - use only as many as needed, no more\n3. Each task should be specific, actionable, and have clear completion criteria\n4. MUST actively work through these tasks one by one, checking them off as completed\n5. Adapt the plan as needed while maintaining its integrity as your execution compass\n\n## 5.2 TODO.MD FILE STRUCTURE AND USAGE\nThe todo.md file is your primary working document and action plan:\n\n1. Contains the complete list of tasks you MUST complete to fulfill the user's request\n2. Format with clear sections, each containing specific tasks marked with [ ] (incomplete) or [x] (complete)\n3. Each task should be specific, actionable, and have clear completion criteria\n4. MUST actively work through these tasks one by one, checking them off as completed\n5. Before every action, consult your todo.md to determine which task to tackle next\n6. The todo.md serves as your instruction set - if a task is in todo.md, you are responsible for completing it\n7. Update the todo.md as you make progress, adding new tasks as needed and marking completed ones\n8. Never delete tasks from todo.md - instead mark them complete with [x] to maintain a record of your work\n9. Once ALL tasks in todo.md are marked complete [x], you MUST signal task completion by finishing your response without requesting further tool calls. Provide a final summary message.\n10. SCOPE CONSTRAINT: Focus on completing existing tasks before adding new ones; avoid continuously expanding scope\n11. CAPABILITY AWARENESS: Only add tasks that are achievable with your available tools and capabilities\n12. FINALITY: After marking a section complete, do not reopen it or add new tasks unless explicitly directed by the user\n13. STOPPING CONDITION: If you've made 3 consecutive updates to todo.md without completing any tasks, reassess your approach and either simplify your plan or **use the 'ask_user' tool to seek user guidance, passing the question in the 'query' parameter.**\n14. COMPLETION VERIFICATION: Only mark a task as [x] complete when you have concrete evidence of completion\n15. SIMPLICITY: Keep your todo.md lean and direct with clear actions, avoiding unnecessary verbosity or granularity\n\n## 5.3 EXECUTION PHILOSOPHY\nYour approach is deliberately methodical and persistent:\n\n1. Operate in a continuous loop until explicitly stopped or task completion is signaled.\n2. Execute one step at a time, following a consistent loop: evaluate state \u2192 select tool \u2192 execute \u2192 provide narrative update \u2192 track progress\n3. Every action is guided by your todo.md, consulting it before selecting any tool\n4. Thoroughly verify each completed step before moving forward\n5. **Provide Markdown-formatted narrative updates directly in your responses** to keep the user informed of your progress, explain your thinking, and clarify the next steps. Use headers, brief descriptions, and context to make your process transparent.\n6. CRITICALLY IMPORTANT: Continue running in a loop until either:\n   - Calling the **'ask_user' tool** to wait for essential user input (this pauses the loop). This is THE ONLY way to explicitly request user input and pause execution. Pass the question via the 'query' parameter and any relevant file paths via the 'attachments' parameter.\n   - Finishing your response **without requesting any tool calls** when ALL tasks are finished.\n7. For casual conversation:\n   - Use **'ask_user'** to properly end the conversation turn and wait for user input. Pass your conversational text in the 'query' parameter.\n8. For tasks:\n   - Use **'ask_user'** when you need essential user input to proceed. Pass the specific question in the 'query' parameter and relevant file paths in 'attachments'.\n   - Provide **narrative updates** frequently in your responses to keep the user informed without requiring their input.\n   - Signal completion by **finishing your response without calling any tools** only when ALL tasks are finished.\n9. MANDATORY COMPLETION SIGNAL:\n    - IMMEDIATELY stop calling tools after ALL tasks in todo.md are marked [x]. Provide a final summary message.\n    - NO additional tool calls or commands after all tasks are complete.\n    - NO further exploration or information gathering after completion.\n    - NO redundant checks or validations after completion.\n    - FAILURE to stop calling tools after task completion is a critical error.\n\n## 5.4 TASK MANAGEMENT CYCLE\n1. STATE EVALUATION: Examine Todo.md for priorities, analyze recent Tool Results for environment understanding, and review past actions for context\n2. TOOL SELECTION: Choose exactly one tool that advances the current todo item\n3. EXECUTION: Wait for tool execution and observe results\n4. **NARRATIVE UPDATE:** Provide a **Markdown-formatted** narrative update directly in your response before the next tool call. Include explanations of what you've done, what you're about to do, and why. Use headers, brief paragraphs, and formatting to enhance readability.\n5. PROGRESS TRACKING: Update todo.md with completed items and new tasks\n6. METHODICAL ITERATION: Repeat until section completion\n7. SECTION TRANSITION: Document completion and move to next section\n8. COMPLETION: IMMEDIATELY stop calling tools when ALL tasks are finished. Provide a final summary.\n\n# 6. CONTENT CREATION\n\n## 6.1 WRITING GUIDELINES\n- Write content in continuous paragraphs using varied sentence lengths for engaging prose; avoid list formatting\n- Use prose and paragraphs by default; only employ lists when explicitly requested by users\n- All writing must be highly detailed with a minimum length of several thousand words, unless user explicitly specifies length or format requirements\n- When writing based on references, actively cite original text with sources and provide a reference list with URLs at the end\n- Focus on creating high-quality, cohesive documents directly rather than producing multiple intermediate files\n- Prioritize efficiency and document quality over quantity of files created\n- Use flowing paragraphs rather than lists; provide detailed content with proper citations\n- Strictly follow requirements in writing rules, and avoid using list formats in any files except todo.md\n\n## 6.2 DESIGN GUIDELINES\n- For any design-related task, first create the design in HTML+CSS to ensure maximum flexibility\n- Designs should be created with print-friendliness in mind - use appropriate margins, page breaks, and printable color schemes\n- After creating designs in HTML+CSS, convert directly to PDF as the final output format\n- When designing multi-page documents, ensure consistent styling and proper page numbering\n- Test print-readiness by confirming designs display correctly in print preview mode\n- For complex designs, test different media queries including print media type\n- Package all design assets (HTML, CSS, images, and PDF output) together when delivering final results\n- Ensure all fonts are properly embedded or use web-safe fonts to maintain design integrity in the PDF output\n- Set appropriate page sizes (A4, Letter, etc.) in the CSS using @page rules for consistent PDF rendering\n\n# 7. COMMUNICATION & USER INTERACTION\n\n## 7.1 CONVERSATIONAL INTERACTIONS\nFor casual conversation and social interactions:\n- ALWAYS use the **'ask_user' tool** to end your turn and wait for user input. Pass your conversational text in the 'query' parameter.\n- Keep responses friendly and natural\n- Adapt to user's communication style\n- Ask follow-up questions when appropriate (**using 'ask_user'**)\n- Show interest in user's responses\n\n## 7.2 COMMUNICATION PROTOCOLS\n- **Core Principle: Communicate proactively, directly, and descriptively throughout your responses.**\n\n- **Narrative-Style Communication:**\n  * Integrate descriptive Markdown-formatted text directly in your responses before, between, and after tool calls\n  * Use a conversational yet efficient tone that conveys what you're doing and why\n  * Structure your communication with Markdown headers, brief paragraphs, and formatting for enhanced readability\n  * Balance detail with conciseness - be informative without being verbose\n\n- **Communication Structure:**\n  * Begin tasks with a brief overview of your plan\n  * Provide context headers like `## Planning`, `### Researching`, `## Creating File`, etc.\n  * Before each tool call, explain what you're about to do and why\n  * After significant results, summarize what you learned or accomplished\n  * Use transitions between major steps or sections\n  * Maintain a clear narrative flow that makes your process transparent to the user\n\n- **Message Types & Usage:**\n  * **Direct Narrative:** Embed clear, descriptive text directly in your responses explaining your actions, reasoning, and observations.\n  * **'ask_user' Tool Call:** Use ONLY for essential needs requiring user input (clarification, confirmation, options, missing info, validation) or for conversational turns. Pass the question/prompt in the 'query' parameter and relevant file paths/URLs in the optional 'attachments' parameter (as a comma-separated string). This blocks execution until the user responds or confirms.\n  * Minimize blocking operations ('ask_user'); maximize narrative descriptions in your regular responses.\n- **Deliverables:**\n  * Attach all relevant files by passing their relative paths (comma-separated) in the 'attachments' parameter when calling the **'ask_user'** tool, especially when asking a question related to them or delivering final results before completion.\n  * Always include representable files as attachments when using 'ask_user' if they are relevant to the question or represent a deliverable - this includes HTML files, presentations, writeups, visualizations, reports, and any other viewable content.\n  * For any created files that can be viewed or presented (such as index.html, slides, documents, charts, etc.), always attach them when calling 'ask_user' if relevant to ensure the user can immediately see the results.\n  * Share results and deliverables via 'ask_user' with attachments before signaling final completion.\n  * Ensure users have access to all necessary resources.\n\n- Communication Tools Summary:\n  * **'ask_user' tool call:** Essential questions/clarifications/conversation turns. BLOCKS execution. **USER CAN RESPOND.** Takes 'query' (string) and optional 'attachments' (string, comma-separated paths) parameters.\n  * **Text via markdown format:** Frequent UI/progress updates. NON-BLOCKING. **USER CANNOT RESPOND.**\n  * **Stop generating tool calls:** Signals task completion when ALL tasks are finished and verified. Terminates execution loop.\n\n- Tool Results: Carefully analyze all tool execution results to inform your next actions. **Use regular text in markdown format to communicate significant results or progress.**\n\n## 7.3 ATTACHMENT PROTOCOL\n- **CRITICAL: ALL VISUALIZATIONS MUST BE ATTACHED WHEN USING 'ask_user':**\n  * When calling the 'ask_user' tool, if relevant visualizations or deliverables exist, ALWAYS pass their paths in the 'attachments' parameter (e.g., `attachments=\"report.pdf,chart.png,index.html\"`).\n  * This includes but is not limited to: HTML files, PDF documents, markdown files, images, data visualizations, presentations, reports, dashboards, and UI mockups.\n  * NEVER mention a visualization or viewable content without attaching it via 'ask_user' if it's part of a deliverable or relevant to a question.\n  * If you've created multiple visualizations relevant to the 'ask_user' call, attach ALL of them.\n  * Always make visualizations available to the user via 'ask_user' before signaling final completion.\n  * For web applications or interactive content, always attach the main HTML file when relevant to the 'ask_user' call.\n  * When creating data analysis results, charts must be attached via 'ask_user', not just described, if they are part of the deliverable being discussed or presented.\n  * Remember: If the user should SEE it as part of the current interaction or deliverable, you must ATTACH it with the 'ask_user' tool.\n  * Verify that ALL relevant visual outputs have been attached when calling 'ask_user'.\n\n# 8. COMPLETION PROTOCOLS\n\n## 8.1 TERMINATION RULES\n- IMMEDIATE COMPLETION SIGNAL:\n  * As soon as ALL tasks in todo.md are marked [x], you MUST signal completion by finishing your response **without calling any further tools**. Provide a final summary message.\n  * No additional tool calls or commands are allowed after completion is signaled.\n  * No further exploration or information gathering is permitted.\n  * No redundant checks or validations are needed.\n\n- COMPLETION VERIFICATION:\n  * Verify task completion only once.\n  * If all tasks are complete, immediately signal completion by not calling any more tools.\n  * Do not perform additional checks after verification.\n  * Do not gather more information after completion.\n\n- COMPLETION TIMING:\n  * Signal completion immediately after the last task is marked [x] by generating a final response without tool calls.\n  * No delay between task completion and signaling completion.\n  * No intermediate steps between completion and the final response.\n  * No additional verifications between completion and the final response.\n\n- COMPLETION CONSEQUENCES:\n  * Failure to stop calling tools after task completion is a critical error.\n  * The system will continue running in a loop if completion is not signaled correctly.\n  * Additional tool calls after completion are considered errors.\n  * Redundant verifications after completion are prohibited.\n",
+backend-1  |           "cache_control": {
+backend-1  |             "type": "ephemeral"
+backend-1  |           }
+backend-1  |         }
+backend-1  |       ]
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "user",
+backend-1  |       "content": "clone https://www.rosariosis.org/demonstration/ username and password: teacher"
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "assistant",
+backend-1  |       "content": "I'll help you clone the RosarioSIS demonstration website. Let me first understand what RosarioSIS is and then access the demonstration site with the provided credentials.\n\n## Researching RosarioSIS\n\nLet me search for information about RosarioSIS to understand what we're working with.",
+backend-1  |       "tool_calls": null
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "user",
+backend-1  |       "content": "go on"
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "assistant",
+backend-1  |       "content": "I'll proceed with cloning the RosarioSIS demonstration website. Let me first create a todo list to organize our approach.",
+backend-1  |       "tool_calls": null
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "user",
+backend-1  |       "content": [
+backend-1  |         {
+backend-1  |           "type": "text",
+backend-1  |           "text": "ok",
+backend-1  |           "cache_control": {
+backend-1  |             "type": "ephemeral"
+backend-1  |           }
+backend-1  |         }
+backend-1  |       ]
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "assistant",
+backend-1  |       "content": [
+backend-1  |         {
+backend-1  |           "type": "text",
+backend-1  |           "text": "I'll start by creating a todo list and then proceed with cloning the RosarioSIS demonstration site using the provided credentials.",
+backend-1  |           "cache_control": {
+backend-1  |             "type": "ephemeral"
+backend-1  |           }
+backend-1  |         }
+backend-1  |       ],
+backend-1  |       "tool_calls": null
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "role": "user",
+backend-1  |       "content": [
+backend-1  |         {
+backend-1  |           "type": "text",
+backend-1  |           "text": "great",
+backend-1  |           "cache_control": {
+backend-1  |             "type": "ephemeral"
+backend-1  |           }
+backend-1  |         }
+backend-1  |       ]
+backend-1  |     }
+backend-1  |   ],
+backend-1  |   "temperature": 0,
+backend-1  |   "response_format": null,
+backend-1  |   "top_p": null,
+backend-1  |   "stream": true,
+backend-1  |   "max_tokens": 64000,
+backend-1  |   "tools": [
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "execute_command",
+backend-1  |         "description": "Execute a shell command in the workspace directory. IMPORTANT: By default, commands are blocking and will wait for completion before returning. For long-running operations, use background execution techniques (& operator, nohup) to prevent timeouts. Uses sessions to maintain state between commands. This tool is essential for running CLI tools, installing packages, and managing system operations. Always verify command outputs before using the data. Commands can be chained using && for sequential execution, || for fallback execution, and | for piping output.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "command": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The shell command to execute. Use this for running CLI tools, installing packages, or system operations. Commands can be chained using &&, ||, and | operators. Example: 'find . -type f | sort && grep -r \"pattern\" . | awk \"{print $1}\" | sort | uniq -c'"
+backend-1  |             },
+backend-1  |             "folder": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Optional relative path to a subdirectory of /workspace where the command should be executed. Example: 'data/pdfs'"
+backend-1  |             },
+backend-1  |             "session_name": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Optional name of the session to use. Use named sessions for related commands that need to maintain state. Defaults to 'default'.",
+backend-1  |               "default": "default"
+backend-1  |             },
+backend-1  |             "timeout": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "Optional timeout in seconds. Increase for long-running commands. Defaults to 60. For commands that might exceed this timeout, use background execution with & operator instead.",
+backend-1  |               "default": 60
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "command"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "create_file",
+backend-1  |         "description": "Create a new file with the provided contents at a given path in the workspace. The path must be relative to /workspace (e.g., 'src/main.py' for /workspace/src/main.py)",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "file_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Path to the file to be created, relative to /workspace (e.g., 'src/main.py')"
+backend-1  |             },
+backend-1  |             "file_contents": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The content to write to the file"
+backend-1  |             },
+backend-1  |             "permissions": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "File permissions in octal format (e.g., '644')",
+backend-1  |               "default": "644"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "file_path",
+backend-1  |             "file_contents"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "delete_file",
+backend-1  |         "description": "Delete a file at the given path. The path must be relative to /workspace (e.g., 'src/main.py' for /workspace/src/main.py)",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "file_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Path to the file to be deleted, relative to /workspace (e.g., 'src/main.py')"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "file_path"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "full_file_rewrite",
+backend-1  |         "description": "Completely rewrite an existing file with new content. The file path must be relative to /workspace (e.g., 'src/main.py' for /workspace/src/main.py). Use this when you need to replace the entire file content or make extensive changes throughout the file.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "file_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Path to the file to be rewritten, relative to /workspace (e.g., 'src/main.py')"
+backend-1  |             },
+backend-1  |             "file_contents": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The new content to write to the file, replacing all existing content"
+backend-1  |             },
+backend-1  |             "permissions": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "File permissions in octal format (e.g., '644')",
+backend-1  |               "default": "644"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "file_path",
+backend-1  |             "file_contents"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "str_replace",
+backend-1  |         "description": "Replace specific text in a file. The file path must be relative to /workspace (e.g., 'src/main.py' for /workspace/src/main.py). Use this when you need to replace a unique string that appears exactly once in the file.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "file_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Path to the target file, relative to /workspace (e.g., 'src/main.py')"
+backend-1  |             },
+backend-1  |             "old_str": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Text to be replaced (must appear exactly once)"
+backend-1  |             },
+backend-1  |             "new_str": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Replacement text"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "file_path",
+backend-1  |             "old_str",
+backend-1  |             "new_str"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_click_coordinates",
+backend-1  |         "description": "Click at specific X,Y coordinates on the page",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "x": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The X coordinate to click"
+backend-1  |             },
+backend-1  |             "y": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The Y coordinate to click"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "x",
+backend-1  |             "y"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_click_element",
+backend-1  |         "description": "Click on an element by index",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "index": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The index of the element to click"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "index"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_close_tab",
+backend-1  |         "description": "Close a browser tab",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "page_id": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The ID of the tab to close"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "page_id"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_drag_drop",
+backend-1  |         "description": "Perform drag and drop operation between elements or coordinates",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "element_source": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The source element selector"
+backend-1  |             },
+backend-1  |             "element_target": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The target element selector"
+backend-1  |             },
+backend-1  |             "coord_source_x": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The source X coordinate"
+backend-1  |             },
+backend-1  |             "coord_source_y": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The source Y coordinate"
+backend-1  |             },
+backend-1  |             "coord_target_x": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The target X coordinate"
+backend-1  |             },
+backend-1  |             "coord_target_y": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The target Y coordinate"
+backend-1  |             }
+backend-1  |           }
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_get_dropdown_options",
+backend-1  |         "description": "Get all options from a dropdown element",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "index": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The index of the dropdown element"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "index"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_go_back",
+backend-1  |         "description": "Navigate back in browser history",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {}
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_input_text",
+backend-1  |         "description": "Input text into an element",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "index": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The index of the element to input text into"
+backend-1  |             },
+backend-1  |             "text": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The text to input"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "index",
+backend-1  |             "text"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_navigate_to",
+backend-1  |         "description": "Navigate to a specific url",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "url": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The url to navigate to"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "url"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_scroll_down",
+backend-1  |         "description": "Scroll down the page",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "amount": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "Pixel amount to scroll (if not specified, scrolls one page)"
+backend-1  |             }
+backend-1  |           }
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_scroll_to_text",
+backend-1  |         "description": "Scroll to specific text on the page",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "text": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The text to scroll to"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "text"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_scroll_up",
+backend-1  |         "description": "Scroll up the page",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "amount": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "Pixel amount to scroll (if not specified, scrolls one page)"
+backend-1  |             }
+backend-1  |           }
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_select_dropdown_option",
+backend-1  |         "description": "Select an option from a dropdown by text",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "index": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The index of the dropdown element"
+backend-1  |             },
+backend-1  |             "text": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The text of the option to select"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "index",
+backend-1  |             "text"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_send_keys",
+backend-1  |         "description": "Send keyboard keys such as Enter, Escape, or keyboard shortcuts",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "keys": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The keys to send (e.g., 'Enter', 'Escape', 'Control+a')"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "keys"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_switch_tab",
+backend-1  |         "description": "Switch to a different browser tab",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "page_id": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The ID of the tab to switch to"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "page_id"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "browser_wait",
+backend-1  |         "description": "Wait for the specified number of seconds",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "seconds": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "Number of seconds to wait (default: 3)"
+backend-1  |             }
+backend-1  |           }
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "deploy",
+backend-1  |         "description": "Deploy a static website (HTML+CSS+JS) from a directory in the sandbox to Cloudflare Pages. Only use this tool when permanent deployment to a production environment is needed. The directory path must be relative to /workspace. The website will be deployed to {name}.kortix.cloud.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "name": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Name for the deployment, will be used in the URL as {name}.kortix.cloud"
+backend-1  |             },
+backend-1  |             "directory_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "Path to the directory containing the static website files to deploy, relative to /workspace (e.g., 'build')"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "name",
+backend-1  |             "directory_path"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "expose_port",
+backend-1  |         "description": "Expose a port from the agent's sandbox environment to the public internet and get its preview URL. This is essential for making services running in the sandbox accessible to users, such as web applications, APIs, or other network services. The exposed URL can be shared with users to allow them to interact with the sandbox environment.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "port": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The port number to expose. Must be a valid port number between 1 and 65535.",
+backend-1  |               "minimum": 1,
+backend-1  |               "maximum": 65535
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "port"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "scrape_webpage",
+backend-1  |         "description": "Retrieve the complete text content of a specific webpage using Firecrawl. This tool extracts the full text content from any accessible web page and returns it for analysis, processing, or reference. The extracted text includes the main content of the page without HTML markup. Note that some pages may have limitations on access due to paywalls, access restrictions, or dynamic content loading.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "url": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The complete URL of the webpage to scrape. This should be a valid, accessible web address including the protocol (http:// or https://). The tool will attempt to extract all text content from this URL."
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "url"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "web_search",
+backend-1  |         "description": "Search the web for up-to-date information on a specific topic using the Tavily API. This tool allows you to gather real-time information from the internet to answer user queries, research topics, validate facts, and find recent developments. Results include titles, URLs, summaries, and publication dates. Use this tool for discovering relevant web pages before potentially crawling them for complete content.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "query": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The search query to find relevant web pages. Be specific and include key terms to improve search accuracy. For best results, use natural language questions or keyword combinations that precisely describe what you're looking for."
+backend-1  |             },
+backend-1  |             "num_results": {
+backend-1  |               "type": "integer",
+backend-1  |               "description": "The number of search results to return. Increase for more comprehensive research or decrease for focused, high-relevance results.",
+backend-1  |               "default": 20
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "query"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "see_image",
+backend-1  |         "description": "Allows the agent to 'see' an image file located in the /workspace directory. Provide the relative path to the image. The image content will be made available in the next turn's context.",
+backend-1  |         "parameters": {
+backend-1  |           "type": "object",
+backend-1  |           "properties": {
+backend-1  |             "file_path": {
+backend-1  |               "type": "string",
+backend-1  |               "description": "The relative path to the image file within the /workspace directory (e.g., 'screenshots/image.png'). Supported formats: JPG, PNG, GIF, WEBP. Max size: 5MB."
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "file_path"
+backend-1  |           ]
+backend-1  |         }
+backend-1  |       }
+backend-1  |     },
+backend-1  |     {
+backend-1  |       "type": "function",
+backend-1  |       "function": {
+backend-1  |         "name": "ask_user",
+backend-1  |         "description": "Asks the user a question or provides information and waits for a response. Use this when you need user input, confirmation, or to present final results before completion. Execution will pause.",
+backend-1  |         "parameters": {
+backend-1  |           "properties": {
+backend-1  |             "query": {
+backend-1  |               "description": "The question or information to present to the user.",
+backend-1  |               "title": "Query",
+backend-1  |               "type": "string"
+backend-1  |             },
+backend-1  |             "attachments": {
+backend-1  |               "anyOf": [
+backend-1  |                 {
+backend-1  |                   "type": "string"
+backend-1  |                 },
+backend-1  |                 {
+backend-1  |                   "type": "null"
+backend-1  |                 }
+backend-1  |               ],
+backend-1  |               "default": null,
+backend-1  |               "description": "Comma-separated list of relative file paths (from /workspace) or URLs to attach to the message.",
+backend-1  |               "title": "Attachments"
+backend-1  |             }
+backend-1  |           },
+backend-1  |           "required": [
+backend-1  |             "query"
+backend-1  |           ],
+backend-1  |           "title": "Input",
+backend-1  |           "type": "object"
+backend-1  |         }
+backend-1  |       }
+backend-1  |     }
+backend-1  |   ],
+backend-1  |   "tool_choice": "auto",
+backend-1  |   "extra_headers": {
+backend-1  |     "anthropic-beta": "output-128k-2025-02-19"
+backend-1  |   }
+backend-1  | }
+backend-1  | 172.18.0.1:65424 - "GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:04,606 - INFO - Request started: GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09/stream from 172.18.0.1 | Query: token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImN6QjNoVTA2ejdsckdDeDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3JoeWtpcnFka2xzbGxibnh6enFmLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5YzM2Nzk5MC1iNGU4LTRkZGYtYjYzNy03OTE5NDc2MTcwY2UiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ2MTEwNzMxLCJpYXQiOjE3NDYxMDcxMzEsImVtYWlsIjoiZGFuLmdpbGxlc0BzdXBlcmJ1aWxkZXJzLnNjaG9vbCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJkYW4uZ2lsbGVzQHN1cGVyYnVpbGRlcnMuc2Nob29sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiOWMzNjc5OTAtYjRlOC00ZGRmLWI2MzctNzkxOTQ3NjE3MGNlIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoiZW1haWwvc2lnbnVwIiwidGltZXN0YW1wIjoxNzQ1OTMyNjM1fV0sInNlc3Npb25faWQiOiIwZWQ2OGE2Zi03YTY3LTQ2MzUtYTFiNi0zM2NhMTI4ODZlZWYiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.Lzc6UmXAnwUZ0P0bc4g7T6m3oDghBlNNRBDXv6Quqeg
+backend-1  | 2025-05-01 14:03:04,607 - INFO - Starting stream for agent run: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 172.18.0.1:65424 - "GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09/stream?token=eyJhbGciOiJIUzI1NiIsImtpZCI6ImN6QjNoVTA2ejdsckdDeDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3JoeWtpcnFka2xzbGxibnh6enFmLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5YzM2Nzk5MC1iNGU4LTRkZGYtYjYzNy03OTE5NDc2MTcwY2UiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ2MTEwNzMxLCJpYXQiOjE3NDYxMDcxMzEsImVtYWlsIjoiZGFuLmdpbGxlc0BzdXBlcmJ1aWxkZXJzLnNjaG9vbCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJkYW4uZ2lsbGVzQHN1cGVyYnVpbGRlcnMuc2Nob29sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiOWMzNjc5OTAtYjRlOC00ZGRmLWI2MzctNzkxOTQ3NjE3MGNlIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoiZW1haWwvc2lnbnVwIiwidGltZXN0YW1wIjoxNzQ1OTMyNjM1fV0sInNlc3Npb25faWQiOiIwZWQ2OGE2Zi03YTY3LTQ2MzUtYTFiNi0zM2NhMTI4ODZlZWYiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.Lzc6UmXAnwUZ0P0bc4g7T6m3oDghBlNNRBDXv6Quqeg HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:08,174 - INFO - Streaming Config: XML=False, Native=True, Execute on stream=True, Strategy=parallel
+backend-1  | 2025-05-01 14:03:08,434 - INFO - Stream generator main loop cancelled for faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 172.18.0.1:65442 - "OPTIONS /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:08,436 - ERROR - Error in listener for faf8ebab-351a-492d-9c41-8e91be640e09: Connection closed by server.
+backend-1  | 2025-05-01 14:03:08,441 - INFO - Request started: GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 from 172.18.0.1 | Query: 
+backend-1  | 172.18.0.1:65440 - "OPTIONS /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09/stop HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:08,442 - INFO - Fetching agent run details: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:08,449 - INFO - Request started: POST /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09/stop from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:03:08,454 - INFO - Received request to stop agent run: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:08,859 - INFO - Successfully added message to thread 8d53fb97-76af-4a31-bdb7-012ec8140578
+backend-1  | 2025-05-01 14:03:09,128 - INFO - Successfully added message to thread 8d53fb97-76af-4a31-bdb7-012ec8140578
+backend-1  | 2025-05-01 14:03:09,130 - INFO - ---> Raw response stream chunks:
+backend-1  | 2025-05-01 14:03:09,142 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='I', role='assistant', function_call=None, tool_calls=None, audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None, citations=None)
+backend-1  | 2025-05-01 14:03:09,145 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content="'ll now begin the process of cloning the", role=None, function_call=None, tool_calls=None, audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None, citations=None)
+backend-1  | 2025-05-01 14:03:09,146 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content=' RosarioSIS demonstration site', role=None, function_call=None, tool_calls=None, audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None, citations=None)
+backend-1  | 2025-05-01 14:03:09,148 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='. Let me create a todo list an', role=None, function_call=None, tool_calls=None, audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None, citations=None)
+backend-1  | 2025-05-01 14:03:09,149 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='d get started.', role=None, function_call=None, tool_calls=None, audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None, citations=None)
+backend-1  | 2025-05-01 14:03:09,152 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id='toolu_016V3BonSoBzWv7RDgEWXFyb', function=Function(arguments='', name='create_file'), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:09,154 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments='', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:09,444 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments='{"fi', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:09,449 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments='le_path": ', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:09,453 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments='"todo.md', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:09,456 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108189, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments='"', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 172.18.0.1:65442 - "GET /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09 HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:10,352 - INFO - Stopping agent run: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:10,358 - INFO - Fetched 13 responses from Redis for DB update on stop/fail: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 2025-05-01 14:03:10,634 - INFO - Successfully updated agent run faf8ebab-351a-492d-9c41-8e91be640e09 status to 'stopped' (retry 0)
+backend-1  | 2025-05-01 14:03:10,914 - INFO - Verified agent run update: status=stopped, completed_at=2025-05-01T14:03:10.359232+00:00
+backend-1  | 2025-05-01 14:03:10,916 - INFO - Received STOP signal for agent run faf8ebab-351a-492d-9c41-8e91be640e09 (Instance: single)
+backend-1  | 2025-05-01 14:03:10,917 - INFO - Successfully initiated stop process for agent run: faf8ebab-351a-492d-9c41-8e91be640e09
+backend-1  | 172.18.0.1:65458 - "POST /api/agent-run/faf8ebab-351a-492d-9c41-8e91be640e09/stop HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:12,190 - INFO - Request started: GET /api/health from 172.18.0.1 | Query: 
+backend-1  | 2025-05-01 14:03:12,191 - INFO - Health check endpoint called
+backend-1  | 172.18.0.1:65458 - "GET /api/health HTTP/1.1" 200
+backend-1  | 2025-05-01 14:03:12,376 - INFO -   Raw Chunk: ModelResponseStream(id='chatcmpl-77889545-85ab-4d26-bd66-158f7f2d3547', created=1746108192, model='claude-3-7-sonnet-latest', object='chat.completion.chunk', system_fingerprint=None, choices=[StreamingChoices(finish_reason=None, index=0, delta=Delta(provider_specific_fields=None, content='', role='assistant', function_call=None, tool_calls=[ChatCompletionDeltaToolCall(id=None, function=Function(arguments=', ', name=None), type='function', index=0)], audio=None), logprobs=None)], provider_specific_fields=None, stream_options=None)
+backend-1  | 2025-05-01 14:03:12,376 - INFO - Agent run faf8ebab-351a-492d-9c41-8e91be640e09 stopped by signal.
+backend-1  | 2025-05-01 14:03:12,652 - INFO - Successfully updated agent run faf8ebab-351a-492d-9c41-8e91be640e09 status to 'stopped' (retry 0)
+backend-1  | 2025-05-01 14:03:12,937 - INFO - Verified agent run update: status=stopped, completed_at=2025-05-01T14:03:12.37877+00:00
+backend-1  | 2025-05-01 14:03:12,942 - INFO - Agent run background task fully completed for: faf8ebab-351a-492d-9c41-8e91be640e09 (Instance: single) with final status: stopped
+backend-1  | 2025-05-01 14:03:13,204 - INFO - Successfully added message to thread 8d53fb97-76af-4a31-bdb7-012ec8140578
+backend-1  | Task exception was never retrieved
+backend-1  | future: <Task finished name='Task-101' coro=<<async_generator_athrow without __name__>()> exception=RuntimeError('async generator ignored GeneratorExit')>
+backend-1  | RuntimeError: async generator ignored GeneratorExit
