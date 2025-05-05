@@ -97,48 +97,77 @@ class ThreadManager:
             raise
 
     async def get_llm_messages(self, thread_id: str) -> List[Dict[str, Any]]:
-        """Get all messages for a thread.
+        """Get relevant messages for LLM context, including last summary if available.
         
-        This method uses the SQL function which handles context truncation
-        by considering summary messages.
+        Fetches the latest summary message (if one exists) and all subsequent messages.
+        Does NOT rely on the SQL RPC function for truncation.
         
         Args:
             thread_id: The ID of the thread to get messages for.
             
         Returns:
-            List of message objects.
+            List of message objects ready for further processing/truncation.
         """
-        logger.debug(f"Getting messages for thread {thread_id}")
+        logger.debug(f"Getting messages for thread {thread_id} for LLM context")
         client = await self.db.client
+        messages = []
         
         try:
-            result = await client.rpc('get_llm_formatted_messages', {'p_thread_id': thread_id}).execute()
-            
-            # Parse the returned data which might be stringified JSON
-            if not result.data:
-                return []
+            # Find the latest summary message
+            summary_result = await client.table('messages').select('message_id, content, created_at') \
+                .eq('thread_id', thread_id) \
+                .eq('type', 'summary') \
+                .eq('is_llm_message', True) \
+                .order('created_at', desc=True) \
+                .limit(1) \
+                .execute()
                 
-            # Return properly parsed JSON objects
-            messages = []
-            for item in result.data:
-                if isinstance(item, str):
-                    try:
-                        parsed_item = json.loads(item)
-                        messages.append(parsed_item)
-                    except json.JSONDecodeError:
-                        logger.error(f"Failed to parse message: {item}")
-                else:
-                    messages.append(item)
+            latest_summary_id = None
+            latest_summary_time = None
+            latest_summary_content = None
 
-            # Ensure tool_calls have properly formatted function arguments
-            for message in messages:
-                if message.get('tool_calls'):
-                    for tool_call in message['tool_calls']:
-                        if isinstance(tool_call, dict) and 'function' in tool_call:
-                            # Ensure function.arguments is a string
-                            if 'arguments' in tool_call['function'] and not isinstance(tool_call['function']['arguments'], str):
-                                tool_call['function']['arguments'] = json.dumps(tool_call['function']['arguments'])
+            if summary_result.data:
+                latest_summary_id = summary_result.data[0]['message_id']
+                latest_summary_time = summary_result.data[0]['created_at']
+                latest_summary_content = summary_result.data[0]['content']
+                logger.info(f"Found latest summary for thread {thread_id} at {latest_summary_time}")
+                # Add the summary message first if it exists
+                try:
+                    # Parse content if it's a string
+                    parsed_summary = json.loads(latest_summary_content) if isinstance(latest_summary_content, str) else latest_summary_content
+                    messages.append(parsed_summary)
+                except json.JSONDecodeError:
+                    logger.error(f"Failed to parse summary message content: {latest_summary_content}")
 
+            # Build query to get messages AFTER the summary or ALL messages if no summary
+            query = client.table('messages').select('content') \
+                .eq('thread_id', thread_id) \
+                .eq('is_llm_message', True)
+            
+            if latest_summary_time:
+                # Exclude the summary message itself if we already added it
+                query = query.neq('message_id', latest_summary_id)
+                query = query.gt('created_at', latest_summary_time)
+            
+            messages_result = await query.order('created_at').execute()
+
+            # Parse and add subsequent messages
+            for msg in messages_result.data:
+                content = msg['content']
+                try:
+                    # Parse content if it's a string
+                    parsed_content = json.loads(content) if isinstance(content, str) else content
+                    # Ensure tool_calls arguments are strings
+                    if isinstance(parsed_content, dict) and parsed_content.get('tool_calls'):
+                        for tool_call in parsed_content['tool_calls']:
+                             if isinstance(tool_call, dict) and 'function' in tool_call:
+                                 if 'arguments' in tool_call['function'] and not isinstance(tool_call['function']['arguments'], str):
+                                     tool_call['function']['arguments'] = json.dumps(tool_call['function']['arguments'])
+                    messages.append(parsed_content)
+                except json.JSONDecodeError:
+                    logger.error(f"Failed to parse message content: {content}")
+
+            logger.info(f"Retrieved {len(messages)} messages (summary + subsequent) for thread {thread_id}")
             return messages
             
         except Exception as e:
@@ -248,44 +277,39 @@ Here are the XML tools available with examples:
                 nonlocal processor_config 
                 # Note: processor_config is now guaranteed to exist due to check above
                 
-                # 1. Get messages from thread for LLM call
+                # 1. Get messages from thread for LLM call (Now fetches summary + recent)
                 messages = await self.get_llm_messages(thread_id)
                 
-                # 2. Check token count before proceeding
-                token_count = 0
-                try:
-                    from litellm import token_counter
-                    # Use the potentially modified working_system_prompt for token counting
-                    token_count = token_counter(model=llm_model, messages=[working_system_prompt] + messages) 
-                    token_threshold = self.context_manager.token_threshold
-                    logger.info(f"Thread {thread_id} token count: {token_count}/{token_threshold} ({(token_count/token_threshold)*100:.1f}%)")
-                    
-                    if token_count >= token_threshold and enable_context_manager:
-                        logger.info(f"Thread token count ({token_count}) exceeds threshold ({token_threshold}), summarizing...")
-                        summarized = await self.context_manager.check_and_summarize_if_needed(
-                            thread_id=thread_id,
-                            add_message_callback=self.add_message,
-                            model=llm_model,
-                            force=True
-                        )
-                        if summarized:
-                            logger.info("Summarization complete, fetching updated messages with summary")
-                            messages = await self.get_llm_messages(thread_id)
-                            # Recount tokens after summarization, using the modified prompt
-                            new_token_count = token_counter(model=llm_model, messages=[working_system_prompt] + messages) 
-                            logger.info(f"After summarization: token count reduced from {token_count} to {new_token_count}")
-                        else:
-                            logger.warning("Summarization failed or wasn't needed - proceeding with original messages")
-                    elif not enable_context_manager: # Added condition for clarity
-                        logger.info("Automatic summarization disabled. Skipping token count check and summarization.")
+                # 2. Check token count and potentially summarize (using ContextManager)
+                if enable_context_manager:
+                    try:
+                        from litellm import token_counter
+                        # Estimate token count based on fetched messages + system prompt
+                        # Use the main model name for accurate threshold check
+                        current_token_estimate = token_counter(model=llm_model, messages=[working_system_prompt] + messages)
+                        token_threshold = self.context_manager.token_threshold
+                        logger.info(f"Pre-summary check: Thread {thread_id} token count estimate: {current_token_estimate}/{token_threshold} (using model '{llm_model}' for count)")
+                        
+                        if current_token_estimate >= token_threshold:
+                            logger.info(f"Thread token count ({current_token_estimate}) exceeds threshold ({token_threshold}), attempting summarization...")
+                            summarized = await self.context_manager.check_and_summarize_if_needed(
+                                thread_id=thread_id,
+                                add_message_callback=self.add_message,
+                                main_model=llm_model, # Pass the main model name for threshold check
+                                force=False # Let the context manager decide based on threshold
+                            )
+                            if summarized:
+                                logger.info("Summarization successful, refetching messages including new summary.")
+                                messages = await self.get_llm_messages(thread_id)
+                            else:
+                                logger.warning("Summarization check completed, but no summary was created (or failed). Proceeding with current messages.")
+                    except Exception as e:
+                        logger.error(f"Error during token counting or summarization check: {str(e)}", exc_info=True)
+                else:
+                    logger.info("Context manager disabled, skipping summarization check.")
 
-                except Exception as e:
-                    logger.error(f"Error counting tokens or summarizing: {str(e)}")
-                
                 # 3. Prepare messages for LLM call + add temporary message if it exists
-                # Use the working_system_prompt which may contain the XML examples
-                prepared_messages = [working_system_prompt] 
-                
+                prepared_messages = [working_system_prompt]
                 # Find the last user message index
                 last_user_index = -1
                 for i, msg in enumerate(messages):
@@ -304,24 +328,98 @@ Here are the XML tools available with examples:
                     if temp_msg:
                         prepared_messages.append(temp_msg)
                         logger.debug("Added temporary message to the end of prepared messages")
+                
+                # 4. **Trim messages** to fit the target model's context window
+                try:
+                    from litellm import get_model_info, token_counter
+                    from litellm.utils import trim_messages
+                    
+                    logger.debug(f"[TRIM] Attempting to get model info for: {llm_model}")
+                    model_info = get_model_info(llm_model)
+                    max_context = model_info.get('max_input_tokens')
+                    logger.debug(f"[TRIM] Determined max_context: {max_context}")
+                    
+                    if max_context:
+                        # Define a buffer (e.g., 15% or a fixed number like 2000 tokens)
+                        # Allow space for response, system prompt nuances, function defs etc.
+                        # Aiming for 85% utilization to be safer with Anthropic
+                        buffer_tokens = max(3000, int(max_context * 0.15)) # Min 3k or 15%
+                        target_max_tokens = max_context - buffer_tokens
+                        logger.info(f"[TRIM] Target model '{llm_model}' max context: {max_context}. Aiming for {target_max_tokens} after 15% buffer ({buffer_tokens} tokens).")
+                        
+                        current_tokens = token_counter(model=llm_model, messages=prepared_messages)
+                        logger.info(f"[TRIM] Token count BEFORE final trim: {current_tokens}")
+                        
+                        trim_needed = current_tokens > target_max_tokens
+                        logger.info(f"[TRIM] Is trimming needed? ({current_tokens} > {target_max_tokens}): {trim_needed}")
 
-                # 4. Create or use processor config - this is now redundant since we handle it above
-                # but kept for consistency and clarity
-                logger.debug(f"Processor config: XML={processor_config.xml_tool_calling}, Native={processor_config.native_tool_calling}, " 
-                       f"Execute tools={processor_config.execute_tools}, Strategy={processor_config.tool_execution_strategy}, "
+                        if trim_needed:
+                            logger.warning(f"[TRIM] Initiating message trimming... ({current_tokens} > {target_max_tokens})")
+                            # Preserve system prompt (index 0) and summary (potentially index 1 if it exists)
+                            preserved_indices = [0]
+                            if len(prepared_messages) > 1 and prepared_messages[1].get('role') == 'user' and "summary" in prepared_messages[1].get('content', "").lower(): # Adjusted summary check
+                                preserved_indices.append(1)
+                                logger.debug(f"[TRIM] Preserving system prompt (idx 0) and detected summary (idx 1) during trim.")
+                            else:
+                                logger.debug(f"[TRIM] Preserving only system prompt (idx 0) during trim.")
+                                
+                            trimmed_messages = trim_messages(
+                                messages=prepared_messages, 
+                                model=llm_model, 
+                                max_tokens=target_max_tokens,
+                                trim_ratio=0.75, # Trim more aggressively if needed
+                                # preserve_message_indices=preserved_indices # LiteLLM v1.39.0+ syntax
+                            )
+                            # LiteLLM < v1.39.0 workaround for preserving system prompt
+                            if prepared_messages[0]['role'] == 'system' and (not trimmed_messages or trimmed_messages[0] != prepared_messages[0]):
+                                logger.debug("[TRIM] LiteLLM < v1.39.0 workaround: Adding system prompt back.")
+                                trimmed_messages.insert(0, prepared_messages[0])
+                                # Re-trim if adding system prompt back pushed it over limit (rare case)
+                                final_retrim_tokens = token_counter(model=llm_model, messages=trimmed_messages)
+                                if final_retrim_tokens > target_max_tokens:
+                                     logger.warning(f"[TRIM] Re-trimming after adding system prompt back ({final_retrim_tokens} > {target_max_tokens})")
+                                     trimmed_messages = trim_messages(messages=trimmed_messages, model=llm_model, max_tokens=target_max_tokens)
+                                     
+                            trimmed_count = token_counter(model=llm_model, messages=trimmed_messages)
+                            logger.info(f"[TRIM] Token count AFTER final trim: {trimmed_count}")
+                            prepared_messages = trimmed_messages # Replace with trimmed list
+                        else:
+                            logger.info("[TRIM] Token count is within target limit, no final trim needed.")
+                    else:
+                         logger.warning(f"[TRIM] Could not determine max context for model '{llm_model}', skipping final trim.")
+
+                except ImportError:
+                     logger.error("[TRIM] Failed to import trim_messages from litellm.utils. Ensure LiteLLM is updated.")
+                except Exception as trim_err:
+                    # Log the specific error encountered during trimming
+                    logger.error(f"[TRIM] Error during message trimming: {trim_err}", exc_info=True)
+                    logger.warning("[TRIM] Proceeding without trimming due to error.") # Indicate trimming was skipped
+
+                # 5. Create or use processor config (remains the same)
+                logger.debug(f"Processor config: XML={processor_config.xml_tool_calling}, Native={processor_config.native_tool_calling}, " \
+                       f"Execute tools={processor_config.execute_tools}, Strategy={processor_config.tool_execution_strategy}, "\
                        f"XML limit={processor_config.max_xml_tool_calls}")
 
-                # 5. Prepare tools for LLM call
+                # 6. Prepare tools for LLM call (remains the same)
                 openapi_tool_schemas = None
                 if processor_config.native_tool_calling:
                     openapi_tool_schemas = self.tool_registry.get_openapi_schemas()
                     logger.debug(f"Retrieved {len(openapi_tool_schemas) if openapi_tool_schemas else 0} OpenAPI tool schemas")
 
-                # 6. Make LLM API call
+                # Log token count just before the API call for comparison
+                final_check_token_count = -1
+                try:
+                    final_check_token_count = token_counter(model=llm_model, messages=prepared_messages)
+                    logger.info(f"[ThreadManager] Final token count BEFORE make_llm_api_call for model '{llm_model}': {final_check_token_count}")
+                except Exception as log_e:
+                    logger.warning(f"[ThreadManager] Could not recalculate token count before API call: {log_e}")
+                logger.info(f"[ThreadManager] Number of messages in prepared_messages: {len(prepared_messages)}")
+
+                # 7. Make LLM API call (remains the same)
                 logger.debug("Making LLM API call")
                 try:
                     llm_response = await make_llm_api_call(
-                        prepared_messages, # Pass the potentially modified messages
+                        prepared_messages, # Pass the *potentially trimmed* messages
                         llm_model,
                         temperature=llm_temperature,
                         max_tokens=llm_max_tokens,
@@ -337,7 +435,7 @@ Here are the XML tools available with examples:
                     logger.error(f"Failed to make LLM API call: {str(e)}", exc_info=True)
                     raise
 
-                # 7. Process LLM response using the ResponseProcessor
+                # 8. Process LLM response using the ResponseProcessor
                 if stream:
                     logger.debug("Processing streaming response")
                     response_generator = self.response_processor.process_streaming_response(

@@ -34,7 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from "@/components/ui/tooltip"
-import { getProjects, getThreads, Project } from "@/lib/api"
+import { getProjects, getThreads, Project, deleteThread } from "@/lib/api"
 import Link from "next/link"
 
 // Thread with associated project info for display in sidebar
@@ -132,6 +132,32 @@ export function NavAgents() {
   useEffect(() => {
     loadThreadsWithProjects(true);
   }, []);
+
+  // Function to handle thread deletion
+  const handleDeleteThread = async (threadIdToDelete: string) => {
+    console.log(`Attempting to delete thread: ${threadIdToDelete}`);
+    // Optional: Add a confirmation dialog here
+    // if (!confirm("Are you sure you want to delete this agent?")) {
+    //   return;
+    // }
+
+    try {
+      await deleteThread(threadIdToDelete);
+      toast.success("Agent deleted successfully");
+      
+      // Instead of local filter, reload the list from the API to ensure consistency
+      await loadThreadsWithProjects(false); // Use false to avoid main loading indicator
+
+      // If the deleted thread is the current one, navigate away
+      if (pathname?.includes(threadIdToDelete)) {
+        console.log(`Deleted active thread ${threadIdToDelete}, navigating to dashboard`);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Failed to delete thread:", error);
+      toast.error(`Failed to delete agent: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  };
 
   // Listen for project-updated events to update the sidebar without full reload
   useEffect(() => {
@@ -293,8 +319,8 @@ export function NavAgents() {
                           </a>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <Trash2 className="text-muted-foreground" />
+                        <DropdownMenuItem onClick={() => handleDeleteThread(thread.threadId)} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                          <Trash2 className="text-destructive" />
                           <span>Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>

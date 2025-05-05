@@ -578,7 +578,7 @@ export default function ThreadPage({ params }: { params: Promise<ThreadParams> }
     };
   }, [threadId]);
 
-  const handleSubmitMessage = useCallback(async (message: string, options?: { model_name?: string; enable_thinking?: boolean }) => {
+  const handleSubmitMessage = useCallback(async (message: string, options?: { model_name?: string; enable_thinking?: boolean; enable_context_manager?: boolean }) => {
     if (!message.trim()) return;
     setIsSending(true);
 
@@ -598,9 +598,15 @@ export default function ThreadPage({ params }: { params: Promise<ThreadParams> }
     scrollToBottom('smooth');
 
     try {
+      // Prepare options for startAgent, ensuring context manager is enabled
+      const agentOptions = {
+        ...(options || {}), // Spread existing options (model_name, enable_thinking)
+        enable_context_manager: true // Explicitly enable context manager
+      };
+      
       const results = await Promise.allSettled([
         addUserMessage(threadId, message),
-        startAgent(threadId, options)
+        startAgent(threadId, agentOptions) // Pass the combined options
       ]);
 
       // Handle failure to add the user message

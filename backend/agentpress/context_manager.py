@@ -8,7 +8,8 @@ reaching the context window limitations of LLM models.
 import json
 from typing import List, Dict, Any, Optional
 
-from litellm import token_counter, completion, completion_cost
+from litellm import token_counter, completion, completion_cost, get_model_info
+from litellm.utils import trim_messages
 from services.supabase import DBConnection
 from services.llm import make_llm_api_call
 from utils.logger import logger
@@ -30,11 +31,12 @@ class ContextManager:
         self.db = DBConnection()
         self.token_threshold = token_threshold
     
-    async def get_thread_token_count(self, thread_id: str) -> int:
+    async def get_thread_token_count(self, thread_id: str, model: str = "gpt-4") -> int:
         """Get the current token count for a thread using LiteLLM.
         
         Args:
             thread_id: ID of the thread to analyze
+            model: The name of the LLM model being used (for accurate token counting)
             
         Returns:
             The total token count for relevant messages in the thread
@@ -51,9 +53,9 @@ class ContextManager:
             
             # Use litellm's token_counter for accurate model-specific counting
             # This is much more accurate than the SQL-based estimation
-            token_count = token_counter(model="gpt-4", messages=messages)
+            token_count = token_counter(model=model, messages=messages)
             
-            logger.info(f"Thread {thread_id} has {token_count} tokens (calculated with litellm)")
+            logger.info(f"Thread {thread_id} has {token_count} tokens (calculated with litellm using model '{model}')")
             return token_count
                 
         except Exception as e:
@@ -159,30 +161,61 @@ class ContextManager:
             logger.warning("No messages to summarize")
             return None
         
-        logger.info(f"Creating summary for thread {thread_id} with {len(messages)} messages")
+        logger.info(f"Creating summary for thread {thread_id} with {len(messages)} messages using model {model}")
         
-        # Create system message with summarization instructions
+        # --- Trim messages BEFORE creating the prompt for the summarization model ---    
+        try:
+            summary_model_info = get_model_info(model)
+            summary_max_context = summary_model_info.get('max_input_tokens')
+            
+            if summary_max_context:
+                # Leave a buffer for the system prompt instructions AND the requested completion tokens
+                summary_buffer = 5000 # Generous buffer for summary instructions
+                # Subtract summary target tokens as well, as it counts towards the total context for some models
+                summary_target_tokens = summary_max_context - summary_buffer - SUMMARY_TARGET_TOKENS 
+                
+                if summary_target_tokens <= 0:
+                    logger.error(f"[Summary Trim] Calculated target tokens ({summary_target_tokens}) is too low after subtracting buffer and completion target. Aborting summary pre-trim.")
+                    messages_to_summarize = messages # Use original messages
+                else:
+                    messages_to_summarize_tokens = token_counter(model=model, messages=messages)
+                    logger.info(f"[Summary Trim] Tokens in messages to summarize: {messages_to_summarize_tokens}. Target for summarizer input: {summary_target_tokens} (Context: {summary_max_context}, Buffer: {summary_buffer}, Completion: {SUMMARY_TARGET_TOKENS})")
+
+                    if messages_to_summarize_tokens > summary_target_tokens:
+                        logger.warning(f"[Summary Trim] Trimming messages before sending to summarization model ({messages_to_summarize_tokens} > {summary_target_tokens})" )
+                        # We don't need to preserve specific messages for the summary input, just trim from the start
+                        trimmed_summary_input = trim_messages(
+                            messages=messages, 
+                            model=model, 
+                            max_tokens=summary_target_tokens
+                        )
+                        trimmed_count = token_counter(model=model, messages=trimmed_summary_input)
+                        logger.info(f"[Summary Trim] Trimmed messages for summary input down to {trimmed_count} tokens.")
+                        messages_to_summarize = trimmed_summary_input # Use trimmed messages
+                    else:
+                        logger.info("[Summary Trim] No need to trim messages for summarization input.")
+                        messages_to_summarize = messages # Use original messages
+            else:
+                logger.warning(f"[Summary Trim] Could not get max context for summarization model {model}, proceeding without pre-trimming.")
+                messages_to_summarize = messages # Use original messages
+        except Exception as trim_exc:
+            logger.error(f"[Summary Trim] Error during pre-trimming for summarization: {trim_exc}", exc_info=True)
+            messages_to_summarize = messages # Fallback to original messages
+        # --- End Trim messages --- 
+
+        # Create system message with summarization instructions, using the potentially trimmed messages
         system_message = {
             "role": "system",
-            "content": f"""You are a specialized summarization assistant. Your task is to create a concise but comprehensive summary of the conversation history.
-
-The summary should:
-1. Preserve all key information including decisions, conclusions, and important context
-2. Include any tools that were used and their results
-3. Maintain chronological order of events
-4. Be presented as a narrated list of key points with section headers
-5. Include only factual information from the conversation (no new information)
-6. Be concise but detailed enough that the conversation can continue with this summary as context
-
-VERY IMPORTANT: This summary will replace older parts of the conversation in the LLM's context window, so ensure it contains ALL key information and LATEST STATE OF THE CONVERSATION - SO WE WILL KNOW HOW TO PICK UP WHERE WE LEFT OFF.
-
+            "content": f"""You are a specialized summarization assistant. Your task is to create a concise but comprehensive summary of the conversation history provided below.
 
 THE CONVERSATION HISTORY TO SUMMARIZE IS AS FOLLOWS:
 ===============================================================
 ==================== CONVERSATION HISTORY ====================
-{messages}
+{messages_to_summarize} 
 ==================== END OF CONVERSATION HISTORY ====================
 ===============================================================
+
+Please create the summary now, ensuring it includes all key decisions, conclusions, tool usage, and important context to allow the conversation to continue smoothly. Present it as a narrated list of key points under relevant section headers.
 """
         }
         
@@ -236,8 +269,9 @@ The above is a summary of the conversation history. The conversation continues b
     async def check_and_summarize_if_needed(
         self, 
         thread_id: str, 
-        add_message_callback, 
-        model: str = "gpt-4o-mini",
+        add_message_callback,
+        main_model: str,
+        summarization_model: str = "gpt-4o-mini",
         force: bool = False
     ) -> bool:
         """Check if thread needs summarization and summarize if so.
@@ -245,15 +279,16 @@ The above is a summary of the conversation history. The conversation continues b
         Args:
             thread_id: ID of the thread to check
             add_message_callback: Callback to add the summary message to the thread
-            model: LLM model to use for summarization
+            main_model: The LLM model used by the main thread (for token threshold check)
+            summarization_model: LLM model to use for generating the summary
             force: Whether to force summarization regardless of token count
             
         Returns:
             True if summarization was performed, False otherwise
         """
         try:
-            # Get token count using LiteLLM (accurate model-specific counting)
-            token_count = await self.get_thread_token_count(thread_id)
+            # Get token count using LiteLLM, using the main model name for accuracy
+            token_count = await self.get_thread_token_count(thread_id, model=main_model) 
             
             # If token count is below threshold and not forcing, no summarization needed
             if token_count < self.token_threshold and not force:
@@ -262,9 +297,9 @@ The above is a summary of the conversation history. The conversation continues b
             
             # Log reason for summarization
             if force:
-                logger.info(f"Forced summarization of thread {thread_id} with {token_count} tokens")
+                logger.info(f"Forced summarization of thread {thread_id} with {token_count} tokens (counted with {main_model})")
             else:
-                logger.info(f"Thread {thread_id} exceeds token threshold ({token_count} >= {self.token_threshold}), summarizing...")
+                logger.info(f"Thread {thread_id} exceeds token threshold ({token_count} >= {self.token_threshold}) using model {main_model}, summarizing...")
             
             # Get messages to summarize
             messages = await self.get_messages_for_summarization(thread_id)
@@ -274,8 +309,8 @@ The above is a summary of the conversation history. The conversation continues b
                 logger.info(f"Thread {thread_id} has too few messages ({len(messages)}) to summarize")
                 return False
             
-            # Create summary
-            summary = await self.create_summary(thread_id, messages, model)
+            # Create summary using the specified summarization model
+            summary = await self.create_summary(thread_id, messages, model=summarization_model)
             
             if summary:
                 # Add summary message to thread

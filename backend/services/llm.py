@@ -16,6 +16,7 @@ import json
 import asyncio
 from openai import OpenAIError
 import litellm
+from litellm import token_counter
 from utils.logger import logger
 from utils.config import config
 from datetime import datetime
@@ -25,7 +26,7 @@ import traceback
 litellm.modify_params=True
 
 # Constants
-MAX_RETRIES = 3
+MAX_RETRIES = 1
 RATE_LIMIT_DELAY = 30
 RETRY_DELAY = 5
 
@@ -159,8 +160,16 @@ def prepare_params(
 
     # Apply Anthropic prompt caching (minimal implementation)
     # Check model name *after* potential modifications (like adding bedrock/ prefix)
-    effective_model_name = params.get("model", model_name) # Use model from params if set, else original
+    effective_model_name = params.get("model", model_name)
     if "claude" in effective_model_name.lower() or "anthropic" in effective_model_name.lower():
+        # Log the Anthropic key being used (partially)
+        anthropic_key_to_log = params.get("api_key") or config.ANTHROPIC_API_KEY
+        if anthropic_key_to_log:
+            partial_key = f"{anthropic_key_to_log[:5]}...{anthropic_key_to_log[-4:]}"
+            logger.info(f"Using Anthropic API Key (partial): {partial_key} for model {effective_model_name}")
+        else:
+            logger.warning(f"No Anthropic API Key found in params or config for model {effective_model_name}")
+
         messages = params["messages"] # Direct reference, modification affects params
 
         # Ensure messages is a list
@@ -304,11 +313,34 @@ async def make_llm_api_call(
             logger.debug(f"Attempt {attempt + 1}/{MAX_RETRIES}")
             # logger.debug(f"API request parameters: {json.dumps(params, indent=2)}")
             
+            # Log final payload size details before the actual call
+            final_messages = params.get("messages", [])
+            final_message_count = len(final_messages)
+            final_token_count_estimate = -1
+            try:
+                final_token_count_estimate = token_counter(model=params.get("model"), messages=final_messages)
+                logger.info(f"[LLM Service] Final check BEFORE litellm.acompletion (attempt {attempt+1}): Model='{params.get('model')}', Messages='{final_message_count}', Estimated Tokens='{final_token_count_estimate}'")
+            except Exception as count_err:
+                logger.warning(f"[LLM Service] Could not estimate token count before call: {count_err}")
+                logger.info(f"[LLM Service] Final check BEFORE litellm.acompletion (attempt {attempt+1}): Model='{params.get('model')}', Messages='{final_message_count}', Estimated Tokens='ERROR'")
+
             response = await litellm.acompletion(**params)
             logger.debug(f"Successfully received API response from {model_name}")
-            logger.debug(f"Response: {response}")
+            # logger.debug(f"Response: {response}") # Avoid logging potentially large successful responses
             return response
             
+        except litellm.exceptions.ContextWindowExceededError as cwe:
+            # Log details specifically for context window errors
+            logger.error(f"[LLM Service] ContextWindowExceededError on attempt {attempt + 1}/{MAX_RETRIES}. Model: {params.get('model')}, Final Estimated Tokens: {final_token_count_estimate}, Error: {cwe}", exc_info=True)
+            last_error = cwe # Store specific error
+            # Decide if retry makes sense - for context window, it usually doesn't unless message structure changes
+            if attempt + 1 < MAX_RETRIES:
+                 logger.warning("Context window exceeded, retrying might not help but proceeding...")
+                 await handle_error(cwe, attempt, MAX_RETRIES) # Use standard backoff
+            else:
+                 logger.error("Context window exceeded, max retries reached.")
+                 raise LLMRetryError(f"Failed to make API call after {MAX_RETRIES} attempts. Last error: {cwe}") from cwe
+
         except (litellm.exceptions.RateLimitError, OpenAIError, json.JSONDecodeError) as e:
             last_error = e
             await handle_error(e, attempt, MAX_RETRIES)

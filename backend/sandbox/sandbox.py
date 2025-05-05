@@ -80,7 +80,7 @@ def start_supervisord_session(sandbox: Sandbox):
         sandbox.process.execute_session_command(session_id, SessionExecuteRequest(
             command="exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf",
             var_async=True
-        ))
+        ), timeout=300)
         logger.info(f"Supervisord started in session {session_id}")
     except Exception as e:
         logger.error(f"Error starting supervisord session: {str(e)}")

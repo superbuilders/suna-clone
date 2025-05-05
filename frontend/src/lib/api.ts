@@ -412,6 +412,20 @@ export const createThread = async (projectId: string): Promise<Thread> => {
   return data;
 };
 
+export const deleteThread = async (threadId: string): Promise<void> => {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('threads')
+    .delete()
+    .eq('thread_id', threadId);
+  
+  if (error) {
+    console.error('Error deleting thread:', error);
+    throw error;
+  }
+  console.log(`[API] Thread deleted: ${threadId}`);
+};
+
 export const addUserMessage = async (threadId: string, content: string): Promise<void> => {
   const supabase = createClient();
   
