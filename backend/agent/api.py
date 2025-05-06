@@ -516,48 +516,113 @@ async def stream_agent_run(
             async def listen_messages():
                 response_reader = pubsub_response.listen()
                 control_reader = pubsub_control.listen()
-                tasks = [asyncio.create_task(response_reader.__anext__()), asyncio.create_task(control_reader.__anext__())]
+                
+                # tasks_map stores task_obj: (reader_obj, "reader_name_str")
+                tasks_map = {}
+                
+                def _schedule_reader(reader_obj, reader_name_str):
+                    task = asyncio.create_task(reader_obj.__anext__())
+                    tasks_map[task] = (reader_obj, reader_name_str)
+                    # logger.debug(f"Scheduled {reader_name_str} for {agent_run_id}, task: {task.get_name()}")
+                    return task
 
-                while not terminate_stream:
-                    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-                    for task in done:
-                        try:
-                            message = task.result()
-                            if message and isinstance(message, dict) and message.get("type") == "message":
-                                channel = message.get("channel")
-                                data = message.get("data")
-                                if isinstance(data, bytes): data = data.decode('utf-8')
+                # Initial scheduling
+                # Explicitly add to a list that asyncio.wait will use
+                current_awaitable_tasks = [
+                    _schedule_reader(response_reader, "response"),
+                    _schedule_reader(control_reader, "control")
+                ]
+                
+                try:
+                    while not terminate_stream:
+                        if not current_awaitable_tasks:
+                            logger.info(f"listen_messages for {agent_run_id}: No active readers, exiting loop.")
+                            break # Exit if no tasks to await
 
-                                if channel == response_channel and data == "new":
-                                    await message_queue.put({"type": "new_response"})
-                                elif channel == control_channel and data in ["STOP", "END_STREAM", "ERROR"]:
-                                    logger.info(f"Received control signal '{data}' for {agent_run_id}")
-                                    await message_queue.put({"type": "control", "data": data})
-                                    return # Stop listening on control signal
+                        done, pending = await asyncio.wait(current_awaitable_tasks, return_when=asyncio.FIRST_COMPLETED)
+                        
+                        current_awaitable_tasks = list(pending) # Next iteration will await these
 
-                        except StopAsyncIteration:
-                            logger.warning(f"Listener {task} stopped.")
-                            # Decide how to handle listener stopping, maybe terminate?
-                            await message_queue.put({"type": "error", "data": "Listener stopped unexpectedly"})
-                            return
-                        except Exception as e:
-                            logger.error(f"Error in listener for {agent_run_id}: {e}")
-                            await message_queue.put({"type": "error", "data": "Listener failed"})
-                            return
-                        finally:
-                            # Reschedule the completed listener task
-                            if task in tasks:
-                                tasks.remove(task)
-                                if message and isinstance(message, dict) and message.get("channel") == response_channel:
-                                     tasks.append(asyncio.create_task(response_reader.__anext__()))
-                                elif message and isinstance(message, dict) and message.get("channel") == control_channel:
-                                     tasks.append(asyncio.create_task(control_reader.__anext__()))
+                        for task in done:
+                            reader_obj, reader_name = tasks_map.pop(task) # Remove from map as it's "done"
 
-                # Cancel pending listener tasks on exit
-                for p_task in pending: p_task.cancel()
-                for task in tasks: task.cancel()
+                            try:
+                                message = task.result()
+                                # logger.debug(f"listen_messages for {agent_run_id}: received from {reader_name}: {message}")
 
+                                if message and isinstance(message, dict) and message.get("type") == "message":
+                                    channel = message.get("channel")
+                                    data = message.get("data")
+                                    if isinstance(data, bytes): data = data.decode('utf-8')
 
+                                    if channel == response_channel and data == "new":
+                                        await message_queue.put({"type": "new_response"})
+                                    elif channel == control_channel and data in ["STOP", "END_STREAM", "ERROR"]:
+                                        logger.info(f"listen_messages for {agent_run_id} received control signal '{data}' from {reader_name} on {channel}")
+                                        await message_queue.put({"type": "control", "data": data})
+                                        # The main stream_generator loop will set terminate_stream = True
+                                    # else: # Commented out verbose logging
+                                        # logger.debug(f"listen_messages for {agent_run_id} received unhandled pubsub message on {channel} from {reader_name}: {data}")
+                                # else: # Commented out verbose logging
+                                    # logger.debug(f"listen_messages for {agent_run_id} received non-message type from {reader_name}: {message}")
+                                
+                                # If not terminating, reschedule this reader
+                                if not terminate_stream:
+                                    current_awaitable_tasks.append(_schedule_reader(reader_obj, reader_name))
+
+                            except StopAsyncIteration:
+                                logger.warning(f"listen_messages for {agent_run_id}: {reader_name} reader StopAsyncIteration. Channel likely closed. Stopping this listener.")
+                                await message_queue.put({"type": "error", "data": f"{reader_name} reader stopped (StopAsyncIteration)."})
+                                # Do not reschedule this one. If other listeners are active, they continue until terminate_stream.
+                            except asyncio.CancelledError:
+                                logger.info(f"listen_messages for {agent_run_id}: {reader_name} reader task cancelled internally.")
+                                # Do not reschedule. This specific __anext__ task is cancelled.
+                                # If listen_messages() itself is cancelled, the outer try/except CancelledError will handle it.
+                            except redis.exceptions.ConnectionError as ce:
+                                logger.error(f"listen_messages for {agent_run_id}: {reader_name} reader ConnectionError: {ce}. Stopping all listeners.")
+                                await message_queue.put({"type": "error", "data": f"{reader_name} reader ConnectionError: {ce}"})
+                                # terminate_stream = True # Signal main loop to stop
+                            except Exception as e:
+                                logger.error(f"listen_messages for {agent_run_id}: Unhandled error in {reader_name} reader: {e}", exc_info=True)
+                                await message_queue.put({"type": "error", "data": f"Error in {reader_name} reader: {e}"})
+                                # terminate_stream = True # Signal main loop to stop
+                    
+                    # If all tasks somehow complete or error out without terminate_stream being set by queue processing
+                    if not current_awaitable_tasks and not terminate_stream:
+                        logger.warning(f"listen_messages for {agent_run_id}: All reader tasks completed/errored, loop ending.")
+
+                except asyncio.CancelledError:
+                    logger.info(f"listen_messages task for {agent_run_id} was cancelled.")
+                    raise # Re-raise for the outer task (listener_task) to handle or propagate
+                finally:
+                    logger.debug(f"listen_messages for {agent_run_id} in 'finally' block. Cleaning up {len(tasks_map)} tasks in map and {len(current_awaitable_tasks)} current awaitables.")
+                    
+                    # Combine all potentially active tasks. tasks_map might still have tasks if loop exited abruptly.
+                    all_known_tasks = list(tasks_map.keys()) + current_awaitable_tasks
+                    unique_tasks_to_cancel = list(set(all_known_tasks))
+
+                    for t_cancel in unique_tasks_to_cancel:
+                        if not t_cancel.done():
+                            # logger.debug(f"Cancelling task {t_cancel.get_name()} in listen_messages finally block for {agent_run_id}")
+                            t_cancel.cancel()
+                    
+                    if unique_tasks_to_cancel:
+                        # logger.debug(f"Gathering {len(unique_tasks_to_cancel)} tasks in listen_messages finally block for {agent_run_id}.")
+                        results = await asyncio.gather(*unique_tasks_to_cancel, return_exceptions=True)
+                        for i, res in enumerate(results):
+                            # task_name_for_log = unique_tasks_to_cancel[i].get_name()
+                            if isinstance(res, asyncio.CancelledError):
+                                pass # Expected if we cancelled it
+                                # logger.debug(f"Task {task_name_for_log} successfully cancelled in listen_messages finally for {agent_run_id}.")
+                            elif isinstance(res, Exception):
+                                logger.warning(f"Task {i} (originally from listen_messages) resulted in error during finally cleanup for {agent_run_id}: {res}")
+                        # logger.debug(f"Finished gathering tasks in listen_messages finally for {agent_run_id}.")
+                    # else:
+                        # logger.debug(f"No tasks to gather in listen_messages finally for {agent_run_id}.")
+                    tasks_map.clear() # Clear the map after cleanup attempt
+                    logger.debug(f"listen_messages for {agent_run_id} finished 'finally' block.")
+
+            # Start the listener task
             listener_task = asyncio.create_task(listen_messages())
 
             # 4. Main loop to process messages from the queue
