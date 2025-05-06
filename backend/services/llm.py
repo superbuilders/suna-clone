@@ -324,6 +324,64 @@ async def make_llm_api_call(
                 logger.warning(f"[LLM Service] Could not estimate token count before call: {count_err}")
                 logger.info(f"[LLM Service] Final check BEFORE litellm.acompletion (attempt {attempt+1}): Model='{params.get('model')}', Messages='{final_message_count}', Estimated Tokens='ERROR'")
 
+            # Dynamically adjust max_tokens for Anthropic models to prevent context overflow
+            # This is done after the initial final_token_count_estimate and before the acompletion call.
+            if params.get("model") and "anthropic" in params.get("model", "").lower() and final_token_count_estimate > 0:
+                try:
+                    model_info = litellm.get_model_info(params.get("model"))
+                    # For Anthropic, max_input_tokens is the total context window for prompt + completion.
+                    actual_max_context = model_info.get('max_input_tokens') 
+                    
+                    if actual_max_context:
+                        # Correction factor based on observed underestimation (e.g., 142k actual vs 116k estimate -> ~1.22)
+                        # Using 1.25 as a slightly safer margin.
+                        correction_factor = 1.25 
+                        inflated_input_estimate = int(final_token_count_estimate * correction_factor)
+                        
+                        # Tokens available for output generation
+                        available_for_output = actual_max_context - inflated_input_estimate
+                        
+                        # Apply a small safety buffer for the output itself
+                        output_safety_buffer = 2000  # e.g., 2k tokens
+                        dynamically_calculated_max_tokens = max(1, available_for_output - output_safety_buffer) # Ensure at least 1 token
+
+                        original_requested_max_tokens = params.get("max_tokens") # As initially set by prepare_params
+
+                        new_max_tokens = dynamically_calculated_max_tokens
+                        if original_requested_max_tokens is not None:
+                            # If an explicit max_tokens was requested, respect it as an upper bound
+                            new_max_tokens = min(original_requested_max_tokens, dynamically_calculated_max_tokens)
+                        
+                        if (original_requested_max_tokens is None) or (new_max_tokens < original_requested_max_tokens) :
+                             logger.info(
+                                 f"Dynamically adjusting 'max_tokens' for Anthropic model {params.get('model')}. "
+                                 f"Original Req: {original_requested_max_tokens}, "
+                                 f"Estimated Input (raw): {final_token_count_estimate}, "
+                                 f"Estimated Input (inflated): {inflated_input_estimate}, "
+                                 f"Model Max Context: {actual_max_context}, "
+                                 f"Available for Output (pre-buffer): {available_for_output}, "
+                                 f"New 'max_tokens': {new_max_tokens}"
+                             )
+                        
+                        params["max_tokens"] = new_max_tokens
+
+                        # Safety check: if max_tokens becomes non-positive, log an error.
+                        # This indicates the inflated input estimate alone might be exceeding the context limit.
+                        # The input trimming logic in thread_manager.py should ideally prevent this earlier,
+                        # but this is a final safeguard.
+                        if params["max_tokens"] <= 0:
+                             logger.error(
+                                 f"Anthropic 'max_tokens' calculated to <= 0 ({params['max_tokens']}). "
+                                 f"Inflated input estimate ({inflated_input_estimate}) "
+                                 f"likely exceeds model context ({actual_max_context}). "
+                                 f"This will probably cause an API error."
+                             )
+                             # Forcing to 1 as Anthropic might require at least 1.
+                             params["max_tokens"] = 1
+                             
+                except Exception as adj_err:
+                    logger.warning(f"Error dynamically adjusting max_tokens for Anthropic: {adj_err}", exc_info=True)
+            
             response = await litellm.acompletion(**params)
             logger.debug(f"Successfully received API response from {model_name}")
             # logger.debug(f"Response: {response}") # Avoid logging potentially large successful responses
@@ -341,9 +399,11 @@ async def make_llm_api_call(
                  logger.error("Context window exceeded, max retries reached.")
                  raise LLMRetryError(f"Failed to make API call after {MAX_RETRIES} attempts. Last error: {cwe}") from cwe
 
-        except (litellm.exceptions.RateLimitError, OpenAIError, json.JSONDecodeError) as e:
+        except (litellm.exceptions.RateLimitError, litellm.InternalServerError, OpenAIError, json.JSONDecodeError) as e:
             last_error = e
             await handle_error(e, attempt, MAX_RETRIES)
+            # If MAX_RETRIES is 1, this block will be exited after the first attempt if an error occurs,
+            # and the error will be re-raised by the logic outside the loop.
             
         except Exception as e:
             logger.error(f"Unexpected error during API call: {str(e)}", exc_info=True)

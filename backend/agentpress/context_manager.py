@@ -169,61 +169,99 @@ class ContextManager:
             summary_max_context = summary_model_info.get('max_input_tokens')
             
             if summary_max_context:
-                # Leave a buffer for the system prompt instructions AND the requested completion tokens
-                summary_buffer = 5000 # Generous buffer for summary instructions
-                # Subtract summary target tokens as well, as it counts towards the total context for some models
-                summary_target_tokens = summary_max_context - summary_buffer - SUMMARY_TARGET_TOKENS 
+                # Define the summarization prompt components
+                system_instruction_text = (
+                    "You are a specialized summarization assistant. Your task is to create a concise but "
+                    "comprehensive summary of the following conversation history. Focus on key decisions, "
+                    "conclusions, tool usage, and important context to allow the conversation to continue smoothly. "
+                    "Present the summary as a narrated list of key points, potentially under relevant section headers if appropriate."
+                )
+                user_instruction_text = "PLEASE PROVIDE THE SUMMARY NOW."
+
+                # Estimate token cost of the system and user instruction messages
+                instruction_messages_for_token_count = [
+                    {"role": "system", "content": system_instruction_text},
+                    {"role": "user", "content": user_instruction_text}
+                ]
+                try:
+                    instruction_token_cost = token_counter(model=model, messages=instruction_messages_for_token_count)
+                    logger.info(f"[Summary Trim] Estimated token cost of summarization instruction messages: {instruction_token_cost}")
+                except Exception as e:
+                    logger.warning(f"[Summary Trim] Could not estimate instruction token cost: {e}. Defaulting to 200 tokens.")
+                    instruction_token_cost = 200 # Fallback
+
+                summary_buffer = 5000 # General safety buffer
                 
-                if summary_target_tokens <= 0:
-                    logger.error(f"[Summary Trim] Calculated target tokens ({summary_target_tokens}) is too low after subtracting buffer and completion target. Aborting summary pre-trim.")
-                    messages_to_summarize = messages # Use original messages
+                # Max tokens available for the actual conversation history messages
+                max_tokens_for_history = summary_max_context - SUMMARY_TARGET_TOKENS - instruction_token_cost - summary_buffer
+                
+                if max_tokens_for_history <= 0:
+                    logger.error(
+                        f"[Summary Trim] Calculated max_tokens_for_history ({max_tokens_for_history}) is too low. "
+                        f"Model: {model}, Max Context: {summary_max_context}, Output Target: {SUMMARY_TARGET_TOKENS}, "
+                        f"Instruction Cost: {instruction_token_cost}, Buffer: {summary_buffer}. "
+                        "Skipping summarization for this attempt as history cannot fit."
+                    )
+                    return None # Cannot proceed if no space for history
+                
+                messages_to_summarize_tokens = token_counter(model=model, messages=messages)
+                logger.info(
+                    f"[Summary Trim] Tokens in raw messages to summarize: {messages_to_summarize_tokens}. "
+                    f"Target token count for history part: {max_tokens_for_history}."
+                )
+
+                trimmed_history_messages = messages
+                if messages_to_summarize_tokens > max_tokens_for_history:
+                    logger.warning(
+                        f"[Summary Trim] Trimming conversation history ({messages_to_summarize_tokens} > {max_tokens_for_history})."
+                    )
+                    trimmed_history_messages = trim_messages(
+                        messages=messages, 
+                        model=model, 
+                        max_tokens=max_tokens_for_history
+                    )
+                    trimmed_count = token_counter(model=model, messages=trimmed_history_messages)
+                    logger.info(f"[Summary Trim] Trimmed conversation history down to {trimmed_count} tokens.")
                 else:
-                    messages_to_summarize_tokens = token_counter(model=model, messages=messages)
-                    logger.info(f"[Summary Trim] Tokens in messages to summarize: {messages_to_summarize_tokens}. Target for summarizer input: {summary_target_tokens} (Context: {summary_max_context}, Buffer: {summary_buffer}, Completion: {SUMMARY_TARGET_TOKENS})")
-
-                    if messages_to_summarize_tokens > summary_target_tokens:
-                        logger.warning(f"[Summary Trim] Trimming messages before sending to summarization model ({messages_to_summarize_tokens} > {summary_target_tokens})" )
-                        # We don't need to preserve specific messages for the summary input, just trim from the start
-                        trimmed_summary_input = trim_messages(
-                            messages=messages, 
-                            model=model, 
-                            max_tokens=summary_target_tokens
-                        )
-                        trimmed_count = token_counter(model=model, messages=trimmed_summary_input)
-                        logger.info(f"[Summary Trim] Trimmed messages for summary input down to {trimmed_count} tokens.")
-                        messages_to_summarize = trimmed_summary_input # Use trimmed messages
-                    else:
-                        logger.info("[Summary Trim] No need to trim messages for summarization input.")
-                        messages_to_summarize = messages # Use original messages
-            else:
-                logger.warning(f"[Summary Trim] Could not get max context for summarization model {model}, proceeding without pre-trimming.")
-                messages_to_summarize = messages # Use original messages
+                    logger.info("[Summary Trim] No need to trim conversation history for summarization input.")
+                
+                # Construct the final list of messages for the LLM
+                llm_messages_for_summary = [
+                    {"role": "system", "content": system_instruction_text}
+                ] + trimmed_history_messages + [
+                    {"role": "user", "content": user_instruction_text}
+                ]
+                
+            else: # No summary_max_context found
+                logger.warning(f"[Summary Trim] Could not get max context for summarization model {model}, proceeding without pre-trimming history (original message count: {len(messages)}).")
+                # Fallback: construct messages without trimming, hoping for the best (less ideal)
+                # This path might still hit errors if total payload is too large.
+                system_instruction_text_fallback = (
+                    "You are a specialized summarization assistant. Your task is to create a concise but "
+                    "comprehensive summary of the conversation history provided in the following messages. Focus on key decisions, "
+                    "conclusions, tool usage, and important context to allow the conversation to continue smoothly. "
+                    "Present the summary as a narrated list of key points, potentially under relevant section headers if appropriate."
+                )
+                user_instruction_text_fallback = "PLEASE PROVIDE THE SUMMARY NOW."
+                llm_messages_for_summary = [
+                    {"role": "system", "content": system_instruction_text_fallback}
+                ] + messages + [ # Using original, untrimmed messages here
+                    {"role": "user", "content": user_instruction_text_fallback}
+                ]
         except Exception as trim_exc:
-            logger.error(f"[Summary Trim] Error during pre-trimming for summarization: {trim_exc}", exc_info=True)
-            messages_to_summarize = messages # Fallback to original messages
-        # --- End Trim messages --- 
+            logger.error(f"[Summary Trim] Error during pre-trimming or message construction for summarization: {trim_exc}", exc_info=True)
+            return None # Cannot proceed if there's an error here
 
-        # Create system message with summarization instructions, using the potentially trimmed messages
-        system_message = {
-            "role": "system",
-            "content": f"""You are a specialized summarization assistant. Your task is to create a concise but comprehensive summary of the conversation history provided below.
+        # Ensure llm_messages_for_summary is defined; it might not be if summary_max_context was None and an error occurred above.
+        if 'llm_messages_for_summary' not in locals():
+             logger.error("[Summary Create] Failed to construct messages for the summarization LLM call. Aborting.")
+             return None
 
-THE CONVERSATION HISTORY TO SUMMARIZE IS AS FOLLOWS:
-===============================================================
-==================== CONVERSATION HISTORY ====================
-{messages_to_summarize} 
-==================== END OF CONVERSATION HISTORY ====================
-===============================================================
-
-Please create the summary now, ensuring it includes all key decisions, conclusions, tool usage, and important context to allow the conversation to continue smoothly. Present it as a narrated list of key points under relevant section headers.
-"""
-        }
-        
         try:
             # Call LLM to generate summary
             response = await make_llm_api_call(
                 model_name=model,
-                messages=[system_message, {"role": "user", "content": "PLEASE PROVIDE THE SUMMARY NOW."}],
+                messages=llm_messages_for_summary,
                 temperature=0,
                 max_tokens=SUMMARY_TARGET_TOKENS,
                 stream=False
