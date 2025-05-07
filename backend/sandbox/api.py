@@ -1,8 +1,10 @@
 import os
-from typing import List, Optional
+from typing import List, Optional, AsyncGenerator, Tuple
+import zipfile
+import io
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, APIRouter, Form, Depends, Request
-from fastapi.responses import Response, JSONResponse
+from fastapi.responses import Response, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
 from utils.logger import logger
@@ -309,3 +311,132 @@ async def ensure_project_sandbox_active(
     except Exception as e:
         logger.error(f"Error ensuring sandbox is active for project {project_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+async def _recursive_list_files(
+    sandbox_fs: any, base_path: str, current_relative_path: str = ""
+) -> AsyncGenerator[Tuple[str, str], None]:
+    """
+    Recursively lists files in the sandbox, yielding tuples of (full_path_in_sandbox, arcname_for_zip).
+    Ensures that paths are correctly formatted for both sandbox access and zip archive.
+    Args:
+        sandbox_fs: The sandbox filesystem object (e.g., sandbox.fs).
+        base_path: The absolute base path in the sandbox to start listing from (e.g., '/workspace').
+        current_relative_path: The current path relative to base_path, used for recursion and arcname.
+    """
+    # Normalize base_path to ensure it ends with a slash if it's not empty, for consistent joining
+    if base_path and not base_path.endswith('/'):
+        normalized_base_path = base_path + '/'
+    else:
+        normalized_base_path = base_path
+
+    # Construct the full path to list in the sandbox
+    # If current_relative_path is empty, list normalized_base_path itself (or just / if base_path is /)
+    # Otherwise, join normalized_base_path with current_relative_path
+    if not current_relative_path:
+        path_to_list = normalized_base_path.rstrip('/') if normalized_base_path != '/' else '/'
+    else:
+        # Ensure no leading slash on current_relative_path for joining
+        path_to_list = os.path.join(normalized_base_path.rstrip('/'), current_relative_path.lstrip('/'))
+    
+    # Ensure path_to_list is correctly formatted, especially for root.
+    # os.path.join might remove trailing slash if base_path is root and current_relative_path is empty.
+    if base_path == '/' and not current_relative_path:
+        path_to_list = '/'
+    elif not path_to_list.startswith('/') and path_to_list: # Ensure it's an absolute path if not empty
+        path_to_list = '/' + path_to_list
+
+    logger.debug(f"Recursively listing files in: {path_to_list}")
+
+    try:
+        items = sandbox_fs.list_files(path_to_list)
+        for item in items:
+            # Construct the new relative path for the item for the next recursion level or for zipping
+            item_relative_path = os.path.join(current_relative_path, item.name)
+            full_path_in_sandbox = os.path.join(path_to_list, item.name)
+            # Ensure full_path_in_sandbox is correctly joined if path_to_list is root
+            if path_to_list == '/':
+                 full_path_in_sandbox = f"/{item.name}"
+
+            if item.is_dir:
+                async for sub_item_path, sub_arcname in _recursive_list_files(
+                    sandbox_fs, base_path, item_relative_path
+                ):
+                    yield sub_item_path, sub_arcname
+            else:
+                # arcname should be relative to the initial base_path (e.g. /workspace)
+                # item_relative_path is already correctly relative to base_path
+                yield full_path_in_sandbox, item_relative_path
+    except Exception as e:
+        logger.error(f"Error listing files in '{path_to_list}': {e}")
+        # Depending on desired behavior, you might want to raise or just log and continue
+
+@router.get("/sandboxes/{sandbox_id}/workspace/zip")
+async def zip_workspace_files(
+    sandbox_id: str,
+    path: Optional[str] = None, # Optional path to zip, defaults to /workspace
+    request: Request = None,
+    user_id: Optional[str] = Depends(get_optional_user_id)
+):
+    """Create and stream a ZIP archive of the workspace files."""
+    logger.info(f"Received request to ZIP workspace for sandbox {sandbox_id}, path: {path or '/workspace'}, user_id: {user_id}")
+    client = await db.client
+
+    project_data = await verify_sandbox_access(client, sandbox_id, user_id)
+    project_name = project_data.get('name', 'workspace')
+    # Sanitize project_name for filename
+    safe_project_name = "".join(c if c.isalnum() or c in ('_', '-') else '_' for c in project_name)
+    zip_filename = f"{safe_project_name}_workspace.zip"
+
+    try:
+        sandbox = await get_sandbox_by_id_safely(client, sandbox_id)
+    except HTTPException as e:
+        # If sandbox retrieval itself fails, re-raise the HTTP exception
+        raise e
+    except Exception as e:
+        logger.error(f"Unexpected error getting sandbox {sandbox_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not access sandbox: {str(e)}")
+
+    zip_buffer = io.BytesIO()
+    base_zip_path = (path or '/workspace').rstrip('/')
+    if not base_zip_path.startswith('/'): # Ensure base_zip_path is absolute
+        base_zip_path = '/' + base_zip_path
+    if not base_zip_path: # Handle case if path was just '/'
+        base_zip_path = '/'
+
+    # Define an async generator for streaming the ZIP content
+    async def file_stream_generator():
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            try:
+                async for file_path_in_sandbox, arcname_in_zip in _recursive_list_files(sandbox.fs, base_zip_path):
+                    logger.debug(f"Adding to ZIP: {file_path_in_sandbox} as {arcname_in_zip}")
+                    try:
+                        file_content = sandbox.fs.download_file(file_path_in_sandbox)
+                        zf.writestr(arcname_in_zip, file_content)
+                    except Exception as e:
+                        logger.error(f"Could not read or add file {file_path_in_sandbox} to ZIP: {e}")
+                        # Add an empty file or a file with error message instead? For now, skip.
+            except Exception as e:
+                logger.error(f"Error during ZIP creation for sandbox {sandbox_id}: {e}")
+                # If an error occurs during generation, this will be caught by the main try/except
+                # and a 500 error will be returned before headers are sent.
+
+        # After zf is closed (all files written to zip_buffer)
+        zip_buffer.seek(0)
+        # Yield chunks of the zip_buffer
+        chunk_size = 8192
+        while True:
+            chunk = zip_buffer.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
+        zip_buffer.close() # Ensure buffer is closed
+
+    try:
+        return StreamingResponse(
+            file_stream_generator(),
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename={zip_filename}"}
+        )
+    except Exception as e:
+        logger.error(f"Failed to stream ZIP for sandbox {sandbox_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate or stream ZIP archive.")

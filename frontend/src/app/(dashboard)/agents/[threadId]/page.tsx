@@ -5,9 +5,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
-  ArrowDown, CheckCircle, CircleDashed, AlertTriangle, Info, File, ChevronRight
+  ArrowDown, CheckCircle, CircleDashed, AlertTriangle, Info, File, ChevronRight, DownloadCloud
 } from 'lucide-react';
-import { addUserMessage, getMessages, startAgent, stopAgent, getAgentRuns, getProject, getThread, updateProject, Project, Message as BaseApiMessageType, BillingError, checkBillingStatus } from '@/lib/api';
+import { addUserMessage, getMessages, startAgent, stopAgent, getAgentRuns, getProject, getThread, updateProject, Project, Message as BaseApiMessageType, BillingError, checkBillingStatus, getSandboxFileContent } from '@/lib/api';
+import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChatInput } from '@/components/thread/chat-input';
@@ -238,6 +239,91 @@ export default function ThreadPage({ params }: { params: Promise<ThreadParams> }
   const [fileViewerOpen, setFileViewerOpen] = useState(false);
   const [projectName, setProjectName] = useState<string>('');
   const [fileToView, setFileToView] = useState<string | null>(null);
+
+  const [isDownloadingAll, setIsDownloadingAll] = useState(false);
+
+  const handleDownloadAllFiles = useCallback(async () => {
+    if (!sandboxId) {
+      toast.info("Sandbox not available.");
+      return;
+    }
+
+    setIsDownloadingAll(true);
+    const downloadToastId = `download-workspace-zip-${Date.now()}`;
+    toast.loading("Preparing workspace ZIP archive...", { id: downloadToastId });
+
+    try {
+      // Get Supabase access token
+      const supabase = createClient();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError || !session?.access_token) {
+        toast.error("Authentication error. Please ensure you are logged in.");
+        setIsDownloadingAll(false);
+        // Do not use the downloadToastId here, as it was for loading.
+        // Let the specific error toast above be the final one for this attempt.
+        return;
+      }
+      const accessToken = session.access_token;
+
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+      const zipUrl = `${backendUrl}/api/sandboxes/${sandboxId}/workspace/zip`; 
+
+      const response = await fetch(zipUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        let errorDetail = "Failed to download workspace ZIP.";
+        try {
+          const errorData = await response.json();
+          errorDetail = errorData.detail || errorData.message || response.statusText;
+        } catch (e) {
+          errorDetail = response.statusText;
+        }
+        // Check for 401 specifically, as it was the original error
+        if (response.status === 401) {
+             errorDetail = "Authentication failed. Please try logging out and back in.";
+        }
+        throw new Error(`Failed to download workspace ZIP: ${response.status} ${errorDetail}`);
+      }
+
+      const blob = await response.blob();
+      
+      let filename = "workspace.zip";
+      const disposition = response.headers.get('content-disposition');
+      if (disposition && disposition.includes('attachment')) {
+        const filenameMatch = disposition.match(/filename[^;=\n]*=((['"])(.*?)\2|[^;\n]*)/i);
+        if (filenameMatch && filenameMatch[3]) {
+          filename = filenameMatch[3];
+        }
+      } else if (projectName) {
+        filename = `${projectName.replace(/[^a-z0-9_.-]/gi, '_')}_workspace.zip`;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success(`Workspace ZIP downloaded as ${filename}.`, { id: downloadToastId });
+    } catch (err) {
+      console.error("Failed to download workspace ZIP:", err);
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
+      // Use a different toast for the final error if downloadToastId was for loading.
+      // However, if toast.error replaces a toast with the same ID, this is fine.
+      toast.error(`Download failed: ${errorMessage}`, { id: downloadToastId }); 
+    } finally {
+      setIsDownloadingAll(false);
+    }
+  }, [sandboxId, projectName]);
 
   const initialLoadCompleted = useRef<boolean>(false);
   const messagesLoadedRef = useRef(false);
@@ -1224,6 +1310,8 @@ export default function ThreadPage({ params }: { params: Promise<ThreadParams> }
             onViewFiles={handleOpenFileViewer} 
             onToggleSidePanel={toggleSidePanel}
             isMobileView={isMobile}
+            onDownloadAllFiles={handleDownloadAllFiles}
+            hasAttachments={!!sandboxId && !isDownloadingAll}
           />
           <div className="flex flex-1 items-center justify-center p-4">
             <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-lg border bg-card p-6 text-center">
@@ -1263,6 +1351,8 @@ export default function ThreadPage({ params }: { params: Promise<ThreadParams> }
           onToggleSidePanel={toggleSidePanel}
           onProjectRenamed={handleProjectRenamed}
           isMobileView={isMobile}
+          onDownloadAllFiles={handleDownloadAllFiles}
+          hasAttachments={!!sandboxId && !isDownloadingAll}
         />
         <div 
           ref={messagesContainerRef}
