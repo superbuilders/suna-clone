@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { FolderOpen, Link, PanelRightOpen, Check, X, Menu } from "lucide-react"
+import { FolderOpen, Link, PanelRightOpen, Check, X, Menu, DownloadCloud } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { toast } from "sonner"
 import {
@@ -26,6 +26,8 @@ interface ThreadSiteHeaderProps {
   onToggleSidePanel: () => void
   onProjectRenamed?: (newName: string) => void
   isMobileView?: boolean
+  onDownloadAllFiles?: () => void
+  hasAttachments?: boolean
 }
 
 export function SiteHeader({ 
@@ -35,7 +37,9 @@ export function SiteHeader({
   onViewFiles, 
   onToggleSidePanel,
   onProjectRenamed,
-  isMobileView
+  isMobileView,
+  onDownloadAllFiles,
+  hasAttachments
 }: ThreadSiteHeaderProps) {
   const pathname = usePathname()
   const [isEditing, setIsEditing] = useState(false)
@@ -195,6 +199,25 @@ export function SiteHeader({
                 <p>View Files in Task</p>
               </TooltipContent>
             </Tooltip>
+
+            {onDownloadAllFiles && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onDownloadAllFiles}
+                    className="h-9 w-9 cursor-pointer"
+                    disabled={!hasAttachments}
+                  >
+                    <DownloadCloud className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{hasAttachments ? "Download All Files" : "No files to download"}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
 
             <Tooltip>
               <TooltipTrigger asChild>
