@@ -41,7 +41,7 @@ export function SiteHeader({
   onProjectRenamed,
   isMobileView,
   onDownloadAllFiles,
-  hasAttachments
+  hasAttachments,
   debugMode,
 }: ThreadSiteHeaderProps) {
   const pathname = usePathname()
@@ -52,6 +52,19 @@ export function SiteHeader({
 
   const isMobile = useIsMobile() || isMobileView
   const { setOpenMobile } = useSidebar()
+
+  const copyCurrentUrl = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+          toast.success("Link copied to clipboard!");
+        })
+        .catch(err => {
+          console.error('Failed to copy link: ', err);
+          toast.error("Failed to copy link.");
+        });
+    }
+  };
 
   const openShareModal = () => {
     setShowShareModal(true)
@@ -120,7 +133,7 @@ export function SiteHeader({
         "bg-background sticky top-0 flex h-14 shrink-0 items-center gap-2 z-20 w-full",
         isMobile && "px-2"
       )}>
-        {isMobile && (
+        {isMobile ? (
           <Button
             variant="ghost"
             size="icon"

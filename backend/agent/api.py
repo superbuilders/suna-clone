@@ -351,14 +351,12 @@ async def start_agent(
         logger.warning(f"Failed to register agent run in Redis ({instance_key}): {str(e)}")
 
     # Run the agent in the background
-    task = asyncio.create_task(
-        run_agent_background(
-            agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
-            project_id=project_id, sandbox=sandbox,
-            model_name=model_name,
-            enable_thinking=body.enable_thinking, reasoning_effort=body.reasoning_effort,
-            stream=body.stream, enable_context_manager=body.enable_context_manager
-        )
+    run_agent_background.send(
+        agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
+        project_id=project_id,
+        model_name=model_name,
+        enable_thinking=body.enable_thinking, reasoning_effort=body.reasoning_effort,
+        stream=body.stream, enable_context_manager=body.enable_context_manager
     )
 
     # Set a callback to clean up Redis instance key when task is done
@@ -858,14 +856,12 @@ async def initiate_agent_with_files(
             logger.warning(f"Failed to register agent run in Redis ({instance_key}): {str(e)}")
 
         # Run agent in background
-        task = asyncio.create_task(
-            run_agent_background(
-                agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
-                project_id=project_id, sandbox=sandbox,
-                model_name=model_name,
-                enable_thinking=enable_thinking, reasoning_effort=reasoning_effort,
-                stream=stream, enable_context_manager=enable_context_manager
-            )
+        run_agent_background.send(
+            agent_run_id=agent_run_id, thread_id=thread_id, instance_id=instance_id,
+            project_id=project_id,
+            model_name=model_name,
+            enable_thinking=enable_thinking, reasoning_effort=reasoning_effort,
+            stream=stream, enable_context_manager=enable_context_manager
         )
 
         return {"thread_id": thread_id, "agent_run_id": agent_run_id}

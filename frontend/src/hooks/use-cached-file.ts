@@ -127,6 +127,10 @@ export function useCachedFile<T = string>(
       // Properly encode the path parameter for UTF-8 support
       url.searchParams.append('path', normalizedPath);
       
+      console.log(`[FileCache Debug] Attempting to fetch: sandboxId=${sandboxId}, path=${normalizedPath}`);
+      
+      console.log(`[FILE CACHE] Fetching file: ${url.toString()}`);
+      
       // Fetch with authentication
       const response = await fetch(url.toString(), {
         headers: {
@@ -620,6 +624,8 @@ export async function getCachedFile(
   try {
     const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sandboxes/${sandboxId}/files/content`);
     url.searchParams.append('path', normalizedPath);
+    
+    console.log(`[FileCache Debug] Attempting to fetch: sandboxId=${sandboxId}, path=${normalizedPath}`);
     
     console.log(`[FILE CACHE] Fetching file: ${url.toString()}`);
     
