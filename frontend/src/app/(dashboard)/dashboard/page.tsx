@@ -50,8 +50,8 @@ function DashboardContent() {
         formData.append('prompt', message);
 
         // Append files
-        files.forEach((file, index) => {
-          formData.append('files', file, file.name);
+        files.forEach((item, index) => {
+          formData.append('files', item.file, item.desiredName);
         });
 
         // Append options individually instead of bundled 'options' field

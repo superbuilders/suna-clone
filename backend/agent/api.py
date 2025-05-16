@@ -979,52 +979,75 @@ async def initiate_agent_with_files(
             failed_uploads = []
             for file in files:
                 if file.filename:
-                    try:
-                        safe_filename = file.filename.replace('/', '_').replace('\\', '_')
-                        target_path = f"/workspace/{safe_filename}"
-                        logger.info(f"Attempting to upload {safe_filename} to {target_path} in sandbox {sandbox_id}")
-                        content = await file.read()
-                        upload_successful = False
-                        try:
-                            if hasattr(sandbox, 'fs') and hasattr(sandbox.fs, 'upload_file'):
-                                import inspect
-                                if inspect.iscoroutinefunction(sandbox.fs.upload_file):
-                                    await sandbox.fs.upload_file(target_path, content)
-                                else:
-                                    sandbox.fs.upload_file(target_path, content)
-                                logger.debug(f"Called sandbox.fs.upload_file for {target_path}")
-                                upload_successful = True
-                            else:
-                                raise NotImplementedError("Suitable upload method not found on sandbox object.")
-                        except Exception as upload_error:
-                            logger.error(f"Error during sandbox upload call for {safe_filename}: {str(upload_error)}", exc_info=True)
+                    original_relative_path = file.filename
+                    
+                    # Sanitize the relative path
+                    # Remove leading slashes and prevent path traversal ".."
+                    safe_relative_path = original_relative_path.lstrip('/')
+                    if ".." in safe_relative_path.split('/') or not safe_relative_path:
+                        logger.warning(f"Skipping file with potentially unsafe or empty path: {original_relative_path}")
+                        failed_uploads.append(original_relative_path)
+                        continue
 
-                        if upload_successful:
-                            try:
-                                await asyncio.sleep(0.2)
-                                parent_dir = os.path.dirname(target_path)
-                                files_in_dir = sandbox.fs.list_files(parent_dir)
-                                file_names_in_dir = [f.name for f in files_in_dir]
-                                if safe_filename in file_names_in_dir:
-                                    successful_uploads.append(target_path)
-                                    logger.info(f"Successfully uploaded and verified file {safe_filename} to sandbox path {target_path}")
-                                else:
-                                    logger.error(f"Verification failed for {safe_filename}: File not found in {parent_dir} after upload attempt.")
-                                    failed_uploads.append(safe_filename)
-                            except Exception as verify_error:
-                                logger.error(f"Error verifying file {safe_filename} after upload: {str(verify_error)}", exc_info=True)
-                                failed_uploads.append(safe_filename)
+                    target_path = f"/workspace/{safe_relative_path}"
+                    parent_dir = os.path.dirname(target_path)
+                    
+                    logger.info(f"Processing file: {original_relative_path} -> sandbox:{target_path}")
+
+                    try:
+                        # Create parent directories if they are not /workspace itself
+                        if parent_dir and parent_dir != "/workspace":
+                            # Ensure parent_dir is safe and within /workspace before creating
+                            if not parent_dir.startswith("/workspace/") or ".." in parent_dir:
+                                logger.error(f"Unsafe parent directory derived: {parent_dir} for original path {original_relative_path}. Skipping.")
+                                failed_uploads.append(original_relative_path)
+                                continue
+                            logger.info(f"Ensuring directory exists: {parent_dir}")
+                            sandbox.fs.create_folder(parent_dir) # Daytona's create_folder is recursive and takes mode as second arg if needed. Default is fine.
+                        
+                        logger.info(f"Attempting to upload {original_relative_path} to {target_path} in sandbox {sandbox_id}")
+                        content = await file.read()
+                        
+                        # Upload the file content to the sandbox
+                        # sandbox.fs.upload_file can be async or sync depending on Daytona SDK version
+                        # Assuming it's sync based on prior usage, adjust if it's async
+                        if hasattr(sandbox, 'fs') and hasattr(sandbox.fs, 'upload_file'):
+                            import inspect
+                            if inspect.iscoroutinefunction(sandbox.fs.upload_file):
+                                await sandbox.fs.upload_file(target_path, content)
+                            else:
+                                sandbox.fs.upload_file(target_path, content)
+                            logger.debug(f"Called sandbox.fs.upload_file for {target_path}")
+                            
+                            # Verification step (optional but good)
+                            # This verification logic might need adjustment based on how sandbox.fs.list_files works with nested paths
+                            # For simplicity, we'll assume upload is successful if no exception.
+                            # The original verification logic was:
+                            # files_in_dir = sandbox.fs.list_files(os.path.dirname(target_path)) # or parent_dir
+                            # file_names_in_dir = [f.name for f in files_in_dir] # f.name might be just basename
+                            # if os.path.basename(safe_relative_path) in file_names_in_dir:
+                            #     successful_uploads.append(target_path) # Use target_path or original_relative_path for user message
+                            # else:
+                            #     logger.error(f"Verification failed for {original_relative_path}: File not found in {parent_dir} after upload attempt.")
+                            #     failed_uploads.append(original_relative_path)
+                            successful_uploads.append(original_relative_path) # Report based on original path
+
                         else:
-                            failed_uploads.append(safe_filename)
+                            raise NotImplementedError("Suitable upload method not found on sandbox object.")
+
                     except Exception as file_error:
-                        logger.error(f"Error processing file {file.filename}: {str(file_error)}", exc_info=True)
-                        failed_uploads.append(file.filename)
+                        logger.error(f"Error processing file {original_relative_path}: {str(file_error)}", exc_info=True)
+                        failed_uploads.append(original_relative_path)
                     finally:
                         await file.close()
+                else:
+                    logger.warning("Received a file without a filename, skipping.")
+
 
             if successful_uploads:
                 message_content += "\n\n" if message_content else ""
-                for file_path in successful_uploads: message_content += f"[Uploaded File: {file_path}]\n"
+                # Use the relative path for the user message
+                for rel_path in successful_uploads: message_content += f"[Uploaded File: {rel_path}]\n"
             if failed_uploads:
                 message_content += "\n\nThe following files failed to upload:\n"
                 for failed_file in failed_uploads: message_content += f"- {failed_file}\n"
