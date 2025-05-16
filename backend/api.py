@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
             # Continue without Redis - the application will handle Redis failures gracefully
         
         # Start background tasks
-        asyncio.create_task(agent_api.restore_running_agent_runs())
+        # asyncio.create_task(agent_api.restore_running_agent_runs())
         
         yield
         
@@ -157,5 +157,5 @@ if __name__ == "__main__":
         host="0.0.0.0", 
         port=8000,
         workers=workers,
-        reload=True
+        # reload=True
     )

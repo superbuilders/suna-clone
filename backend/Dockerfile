@@ -43,11 +43,11 @@ CMD ["sh", "-c", "gunicorn api:app \
      --workers $WORKERS \
      --worker-class uvicorn.workers.UvicornWorker \
      --bind 0.0.0.0:8000 \
-     --timeout 600 \
-     --graceful-timeout 300 \
-     --keep-alive 250 \
-     --max-requests 2000 \
-     --max-requests-jitter 400 \
+     --timeout 1800 \
+     --graceful-timeout 600 \
+     --keep-alive 1800 \
+     --max-requests 0 \
+     --max-requests-jitter 0 \
      --forwarded-allow-ips '*' \
      --worker-connections $WORKER_CONNECTIONS \
      --worker-tmp-dir /dev/shm \

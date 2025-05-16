@@ -190,3 +190,5 @@ supabase/.temp/storage-version
 **/.prompts/
 **/__pycache__/
 
+
+.env.scripts

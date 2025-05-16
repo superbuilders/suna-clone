@@ -5,14 +5,14 @@ stripe listen --forward-to localhost:8000/api/billing/webhook
 """
 
 from fastapi import APIRouter, HTTPException, Depends, Request
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Optional, Dict, Tuple
 import stripe
 from datetime import datetime, timezone
 from utils.logger import logger
 from utils.config import config, EnvMode
 from services.supabase import DBConnection
 from utils.auth_utils import get_current_user_id_from_jwt
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 # Initialize Stripe
 stripe.api_key = config.STRIPE_SECRET_KEY
@@ -21,7 +21,7 @@ stripe.api_key = config.STRIPE_SECRET_KEY
 router = APIRouter(prefix="/billing", tags=["billing"])
 
 SUBSCRIPTION_TIERS = {
-    config.STRIPE_FREE_TIER_ID: {'name': 'free', 'minutes': 10},
+    config.STRIPE_FREE_TIER_ID: {'name': 'free', 'minutes': 60},
     config.STRIPE_TIER_2_20_ID: {'name': 'tier_2_20', 'minutes': 120},  # 2 hours
     config.STRIPE_TIER_6_50_ID: {'name': 'tier_6_50', 'minutes': 360},  # 6 hours
     config.STRIPE_TIER_12_100_ID: {'name': 'tier_12_100', 'minutes': 720},  # 12 hours
@@ -320,6 +320,12 @@ async def create_checkout_session(
                         billing_cycle_anchor='now' # Reset billing cycle
                     )
                     
+                    # Update active status in database to true (customer has active subscription)
+                    await client.schema('basejump').from_('billing_customers').update(
+                        {'active': True}
+                    ).eq('id', customer_id).execute()
+                    logger.info(f"Updated customer {customer_id} active status to TRUE after subscription upgrade")
+                    
                     latest_invoice = None
                     if updated_subscription.get('latest_invoice'):
                        latest_invoice = stripe.Invoice.retrieve(updated_subscription['latest_invoice']) 
@@ -505,6 +511,14 @@ async def create_checkout_session(
                         'product_id': product_id
                 }
             )
+            
+            # Update customer status to potentially active (will be confirmed by webhook)
+            # This ensures customer is marked as active once payment is completed
+            await client.schema('basejump').from_('billing_customers').update(
+                {'active': True}
+            ).eq('id', customer_id).execute()
+            logger.info(f"Updated customer {customer_id} active status to TRUE after creating checkout session")
+            
             return {"session_id": session['id'], "url": session['url'], "status": "new"}
         
     except Exception as e:
@@ -745,8 +759,57 @@ async def stripe_webhook(request: Request):
         
         # Handle the event
         if event.type in ['customer.subscription.created', 'customer.subscription.updated', 'customer.subscription.deleted']:
-            # We don't need to do anything here as we'll query Stripe directly
-            pass
+            # Extract the subscription and customer information
+            subscription = event.data.object
+            customer_id = subscription.get('customer')
+            
+            if not customer_id:
+                logger.warning(f"No customer ID found in subscription event: {event.type}")
+                return {"status": "error", "message": "No customer ID found"}
+            
+            # Get database connection
+            db = DBConnection()
+            client = await db.client
+            
+            if event.type == 'customer.subscription.created' or event.type == 'customer.subscription.updated':
+                # Check if subscription is active
+                if subscription.get('status') in ['active', 'trialing']:
+                    # Update customer's active status to true
+                    await client.schema('basejump').from_('billing_customers').update(
+                        {'active': True}
+                    ).eq('id', customer_id).execute()
+                    logger.info(f"Webhook: Updated customer {customer_id} active status to TRUE based on {event.type}")
+                else:
+                    # Subscription is not active (e.g., past_due, canceled, etc.)
+                    # Check if customer has any other active subscriptions before updating status
+                    has_active = len(stripe.Subscription.list(
+                        customer=customer_id,
+                        status='active',
+                        limit=1
+                    ).get('data', [])) > 0
+                    
+                    if not has_active:
+                        await client.schema('basejump').from_('billing_customers').update(
+                            {'active': False}
+                        ).eq('id', customer_id).execute()
+                        logger.info(f"Webhook: Updated customer {customer_id} active status to FALSE based on {event.type}")
+            
+            elif event.type == 'customer.subscription.deleted':
+                # Check if customer has any other active subscriptions
+                has_active = len(stripe.Subscription.list(
+                    customer=customer_id,
+                    status='active',
+                    limit=1
+                ).get('data', [])) > 0
+                
+                if not has_active:
+                    # If no active subscriptions left, set active to false
+                    await client.schema('basejump').from_('billing_customers').update(
+                        {'active': False}
+                    ).eq('id', customer_id).execute()
+                    logger.info(f"Webhook: Updated customer {customer_id} active status to FALSE after subscription deletion")
+            
+            logger.info(f"Processed {event.type} event for customer {customer_id}")
         
         return {"status": "success"}
         

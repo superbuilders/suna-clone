@@ -1,15 +1,8 @@
-import os
-from typing import Optional
-
 from daytona_sdk import Daytona, DaytonaConfig, CreateSandboxParams, Sandbox, SessionExecuteRequest
 from daytona_api_client.models.workspace_state import WorkspaceState
 from dotenv import load_dotenv
-
-from agentpress.tool import Tool
 from utils.logger import logger
 from utils.config import config
-from utils.files_utils import clean_path
-from agentpress.thread_manager import ThreadManager
 
 load_dotenv()
 
@@ -98,7 +91,7 @@ def create_sandbox(password: str, project_id: str = None):
         labels = {'id': project_id}
         
     params = CreateSandboxParams(
-        image="adamcohenhillel/kortix-suna:0.0.20",
+        image="kortix/suna:0.1.2",
         public=True,
         labels=labels,
         env_vars={

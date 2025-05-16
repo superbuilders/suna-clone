@@ -19,8 +19,6 @@ import litellm
 from litellm import token_counter
 from utils.logger import logger
 from utils.config import config
-from datetime import datetime
-import traceback
 
 # litellm.set_verbose=True
 litellm.modify_params=True
@@ -28,7 +26,7 @@ litellm.modify_params=True
 # Constants
 MAX_RETRIES = 1
 RATE_LIMIT_DELAY = 30
-RETRY_DELAY = 5
+RETRY_DELAY = 0.1
 
 class LLMError(Exception):
     """Base exception for LLM-related errors."""
@@ -47,17 +45,17 @@ def setup_api_keys() -> None:
             logger.debug(f"API key set for provider: {provider}")
         else:
             logger.warning(f"No API key found for provider: {provider}")
-    
+
     # Set up OpenRouter API base if not already set
     if config.OPENROUTER_API_KEY and config.OPENROUTER_API_BASE:
         os.environ['OPENROUTER_API_BASE'] = config.OPENROUTER_API_BASE
         logger.debug(f"Set OPENROUTER_API_BASE to {config.OPENROUTER_API_BASE}")
-    
+
     # Set up AWS Bedrock credentials
     aws_access_key = config.AWS_ACCESS_KEY_ID
     aws_secret_key = config.AWS_SECRET_ACCESS_KEY
     aws_region = config.AWS_REGION_NAME
-    
+
     if aws_access_key and aws_secret_key and aws_region:
         logger.debug(f"AWS credentials set for Bedrock in region: {aws_region}")
         # Configure LiteLLM to use AWS credentials
@@ -133,11 +131,11 @@ def prepare_params(
             "anthropic-beta": "output-128k-2025-02-19"
         }
         logger.debug("Added Claude-specific headers")
-    
+
     # Add OpenRouter-specific parameters
     if model_name.startswith("openrouter/"):
         logger.debug(f"Preparing OpenRouter parameters for model: {model_name}")
-        
+
         # Add optional site URL and app name from config
         site_url = config.OR_SITE_URL
         app_name = config.OR_APP_NAME
@@ -149,11 +147,11 @@ def prepare_params(
                 extra_headers["X-Title"] = app_name
             params["extra_headers"] = extra_headers
             logger.debug(f"Added OpenRouter site URL and app name to headers")
-    
+
     # Add Bedrock-specific parameters
     if model_name.startswith("bedrock/"):
         logger.debug(f"Preparing AWS Bedrock parameters for model: {model_name}")
-        
+
         if not model_id and "anthropic.claude-3-7-sonnet" in model_name:
             params["model_id"] = "arn:aws:bedrock:us-west-2:935064898258:inference-profile/us.anthropic.claude-3-7-sonnet-20250219-v1:0"
             logger.debug(f"Auto-set model_id for Claude 3.7 Sonnet: {params['model_id']}")
@@ -265,7 +263,7 @@ async def make_llm_api_call(
 ) -> Union[Dict[str, Any], AsyncGenerator]:
     """
     Make an API call to a language model using LiteLLM.
-    
+
     Args:
         messages: List of message dictionaries for the conversation
         model_name: Name of the model to use (e.g., "gpt-4", "claude-3", "openrouter/openai/gpt-4", "bedrock/anthropic.claude-3-sonnet-20240229-v1:0")
@@ -281,16 +279,17 @@ async def make_llm_api_call(
         model_id: Optional ARN for Bedrock inference profiles
         enable_thinking: Whether to enable thinking
         reasoning_effort: Level of reasoning effort
-        
+
     Returns:
         Union[Dict[str, Any], AsyncGenerator]: API response or stream
-        
+
     Raises:
         LLMRetryError: If API call fails after retries
         LLMError: For other API-related errors
     """
-    # debug <timestamp>.json messages 
-    logger.debug(f"Making LLM API call to model: {model_name} (Thinking: {enable_thinking}, Effort: {reasoning_effort})")
+    # debug <timestamp>.json messages
+    logger.info(f"Making LLM API call to model: {model_name} (Thinking: {enable_thinking}, Effort: {reasoning_effort})")
+    logger.info(f"📡 API Call: Using model {model_name}")
     params = prepare_params(
         messages=messages,
         model_name=model_name,
@@ -408,7 +407,7 @@ async def make_llm_api_call(
         except Exception as e:
             logger.error(f"Unexpected error during API call: {str(e)}", exc_info=True)
             raise LLMError(f"API call failed: {str(e)}")
-    
+
     error_msg = f"Failed to make API call after {MAX_RETRIES} attempts"
     if last_error:
         error_msg += f". Last error: {str(last_error)}"
@@ -424,7 +423,7 @@ async def test_openrouter():
     test_messages = [
         {"role": "user", "content": "Hello, can you give me a quick test response?"}
     ]
-    
+
     try:
         # Test with standard OpenRouter model
         print("\n--- Testing standard OpenRouter model ---")
@@ -435,7 +434,7 @@ async def test_openrouter():
             max_tokens=100
         )
         print(f"Response: {response.choices[0].message.content}")
-        
+
         # Test with deepseek model
         print("\n--- Testing deepseek model ---")
         response = await make_llm_api_call(
@@ -446,7 +445,7 @@ async def test_openrouter():
         )
         print(f"Response: {response.choices[0].message.content}")
         print(f"Model used: {response.model}")
-        
+
         # Test with Mistral model
         print("\n--- Testing Mistral model ---")
         response = await make_llm_api_call(
@@ -457,7 +456,7 @@ async def test_openrouter():
         )
         print(f"Response: {response.choices[0].message.content}")
         print(f"Model used: {response.model}")
-        
+
         return True
     except Exception as e:
         print(f"Error testing OpenRouter: {str(e)}")
@@ -468,8 +467,8 @@ async def test_bedrock():
     test_messages = [
         {"role": "user", "content": "Hello, can you give me a quick test response?"}
     ]
-    
-    try:    
+
+    try:
         response = await make_llm_api_call(
             model_name="bedrock/anthropic.claude-3-7-sonnet-20250219-v1:0",
             model_id="arn:aws:bedrock:us-west-2:935064898258:inference-profile/us.anthropic.claude-3-7-sonnet-20250219-v1:0",
@@ -480,7 +479,7 @@ async def test_bedrock():
         )
         print(f"Response: {response.choices[0].message.content}")
         print(f"Model used: {response.model}")
-        
+
         return True
     except Exception as e:
         print(f"Error testing Bedrock: {str(e)}")
@@ -488,9 +487,9 @@ async def test_bedrock():
 
 if __name__ == "__main__":
     import asyncio
-        
+
     test_success = asyncio.run(test_bedrock())
-    
+
     if test_success:
         print("\n✅ integration test completed successfully!")
     else:

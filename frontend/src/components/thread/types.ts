@@ -3,12 +3,13 @@ import type { Project } from '@/lib/api';
 import { Message as BaseApiMessageType } from '@/lib/api';
 
 // Define a type for the params to make React.use() work properly
-export type ThreadParams = { 
+export type ThreadParams = {
   threadId: string;
 };
 
 // Unified Message Interface matching the backend/database schema
 export interface UnifiedMessage {
+  sequence?: number;
   message_id: string | null; // Can be null for transient stream events (chunks, unsaved statuses)
   thread_id: string;
   type: 'user' | 'assistant' | 'tool' | 'system' | 'status' | 'browser_state'; // Add 'system' if used
@@ -54,4 +55,4 @@ export interface ApiMessageType extends Omit<BaseApiMessageType, 'type'> {
 }
 
 // Re-export existing types
-export type { Project }; 
+export type { Project };

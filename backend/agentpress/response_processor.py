@@ -16,7 +16,7 @@ from typing import List, Dict, Any, Optional, Tuple, AsyncGenerator, Callable, U
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from litellm import completion_cost, token_counter
+from litellm import completion_cost
 
 from agentpress.tool import Tool, ToolResult
 from agentpress.tool_registry import ToolRegistry
@@ -147,6 +147,8 @@ class ResponseProcessor:
             if assist_start_msg_obj: yield assist_start_msg_obj
             # --- End Start Events ---
 
+            __sequence = 0
+
             async for chunk in llm_response:
                 if hasattr(chunk, 'choices') and chunk.choices and hasattr(chunk.choices[0], 'finish_reason') and chunk.choices[0].finish_reason:
                     finish_reason = chunk.choices[0].finish_reason
@@ -175,12 +177,14 @@ class ResponseProcessor:
                             # Yield ONLY content chunk (don't save)
                             now_chunk = datetime.now(timezone.utc).isoformat()
                             yield {
+                                "sequence": __sequence,
                                 "message_id": None, "thread_id": thread_id, "type": "assistant",
                                 "is_llm_message": True,
                                 "content": json.dumps({"role": "assistant", "content": chunk_content}),
                                 "metadata": json.dumps({"stream_status": "chunk", "thread_run_id": thread_run_id}),
                                 "created_at": now_chunk, "updated_at": now_chunk
                             }
+                            __sequence += 1
                         else:
                             logger.info("XML tool call limit reached - not yielding more content chunks")
 
@@ -560,15 +564,22 @@ class ResponseProcessor:
                 is_llm_message=False, metadata={"thread_run_id": thread_run_id if 'thread_run_id' in locals() else None}
             )
             if err_msg_obj: yield err_msg_obj # Yield the saved error message
+            
+            # Re-raise the same exception (not a new one) to ensure proper error propagation
+            logger.critical(f"Re-raising error to stop further processing: {str(e)}")
+            raise # Use bare 'raise' to preserve the original exception with its traceback
 
         finally:
             # Save and Yield the final thread_run_end status
-            end_content = {"status_type": "thread_run_end"}
-            end_msg_obj = await self.add_message(
-                thread_id=thread_id, type="status", content=end_content, 
-                is_llm_message=False, metadata={"thread_run_id": thread_run_id if 'thread_run_id' in locals() else None}
-            )
-            if end_msg_obj: yield end_msg_obj
+            try:
+                end_content = {"status_type": "thread_run_end"}
+                end_msg_obj = await self.add_message(
+                    thread_id=thread_id, type="status", content=end_content, 
+                    is_llm_message=False, metadata={"thread_run_id": thread_run_id if 'thread_run_id' in locals() else None}
+                )
+                if end_msg_obj: yield end_msg_obj
+            except Exception as final_e:
+                logger.error(f"Error in finally block: {str(final_e)}", exc_info=True)
 
     async def process_non_streaming_response(
         self,
@@ -763,6 +774,10 @@ class ResponseProcessor:
                  is_llm_message=False, metadata={"thread_run_id": thread_run_id if 'thread_run_id' in locals() else None}
              )
              if err_msg_obj: yield err_msg_obj
+             
+             # Re-raise the same exception (not a new one) to ensure proper error propagation
+             logger.critical(f"Re-raising error to stop further processing: {str(e)}")
+             raise # Use bare 'raise' to preserve the original exception with its traceback
 
         finally:
              # Save and Yield the final thread_run_end status
