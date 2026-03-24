@@ -190,5 +190,18 @@ supabase/.temp/storage-version
 **/.prompts/
 **/__pycache__/
 
-
 .env.scripts
+
+# Logs (prevent sensitive data in logs from being committed)
+log.txt
+*.log.txt
+*.log.*
+debug.log
+**/logs/
+backend/logs/
+
+# Environment files (explicit patterns)
+**/.env
+**/.env.*
+!**/.env.example
+frontend/.env.local
